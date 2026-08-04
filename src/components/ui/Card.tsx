@@ -1,19 +1,14 @@
 "use client";
 
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  type AnchorHTMLAttributes,
-  type HTMLAttributes,
-  type ReactNode,
-} from "react";
+import type { AnchorHTMLAttributes, HTMLAttributes, ReactNode } from "react";
+import { useMagnetic } from "@/hooks/useMagnetic";
+import { cn } from "@/lib/cn";
+import { isLinkProps } from "@/lib/polymorphic";
 
 type CardBase = {
   children: ReactNode;
   className?: string;
   magnetic?: boolean;
-  /** Static hover copy for specimen previews */
   forceHover?: boolean;
 };
 
@@ -29,81 +24,18 @@ type CardAsLink = CardBase &
 
 export type CardProps = CardAsDiv | CardAsLink;
 
-function useMagnetic(enabled: boolean) {
-  const ref = useRef<HTMLElement | null>(null);
-  const target = useRef({ x: 0, y: 0 });
-  const current = useRef({ x: 0, y: 0 });
-  const raf = useRef<number | null>(null);
-  const hovering = useRef(false);
+const cardBase = cn(
+  "card-texture bg-surface-1 border border-hairline rounded-md p-space-6",
+  "transition-[transform,border-color,box-shadow] duration-base ease-sz",
+  "[--mx:0px] [--my:0px]",
+  "hover:border-accent-border-hover hover:shadow-accent-card",
+  "hover:[transform:translate3d(var(--mx),calc(var(--my)-4px),0)]",
+);
 
-  const stop = useCallback(() => {
-    if (raf.current != null) {
-      cancelAnimationFrame(raf.current);
-      raf.current = null;
-    }
-  }, []);
-
-  const tick = useCallback(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    current.current.x += (target.current.x - current.current.x) * 0.15;
-    current.current.y += (target.current.y - current.current.y) * 0.15;
-
-    el.style.setProperty("--mx", `${current.current.x}px`);
-    el.style.setProperty("--my", `${current.current.y}px`);
-
-    if (
-      hovering.current ||
-      Math.abs(current.current.x) > 0.1 ||
-      Math.abs(current.current.y) > 0.1
-    ) {
-      raf.current = requestAnimationFrame(tick);
-    } else {
-      el.style.setProperty("--mx", "0px");
-      el.style.setProperty("--my", "0px");
-      raf.current = null;
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!enabled) return;
-
-    const el = ref.current;
-    if (!el) return;
-
-    const coarse = window.matchMedia("(pointer: coarse)").matches;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (coarse || reduced) return;
-
-    const onMove = (e: MouseEvent) => {
-      const rect = el.getBoundingClientRect();
-      const dx = e.clientX - (rect.left + rect.width / 2);
-      const dy = e.clientY - (rect.top + rect.height / 2);
-      target.current.x = Math.max(-4, Math.min(4, dx / 20));
-      target.current.y = Math.max(-4, Math.min(4, dy / 20));
-      hovering.current = true;
-      if (raf.current == null) raf.current = requestAnimationFrame(tick);
-    };
-
-    const onLeave = () => {
-      hovering.current = false;
-      target.current.x = 0;
-      target.current.y = 0;
-      if (raf.current == null) raf.current = requestAnimationFrame(tick);
-    };
-
-    el.addEventListener("mousemove", onMove);
-    el.addEventListener("mouseleave", onLeave);
-    return () => {
-      el.removeEventListener("mousemove", onMove);
-      el.removeEventListener("mouseleave", onLeave);
-      stop();
-    };
-  }, [enabled, stop, tick]);
-
-  return ref;
-}
+const cardForceHover = cn(
+  "border-accent-border-hover shadow-accent-card",
+  "[transform:translate3d(0,-4px,0)]",
+);
 
 export function Card({
   children,
@@ -113,15 +45,15 @@ export function Card({
   ...props
 }: CardProps) {
   const magneticRef = useMagnetic(magnetic);
-  const classNames = ["card", forceHover ? "card--force-hover" : "", className]
-    .filter(Boolean)
-    .join(" ");
+  const classNames = cn(cardBase, forceHover && cardForceHover, className);
 
-  if ("href" in props && props.href) {
+  if (isLinkProps(props)) {
     const { href, ...rest } = props;
     return (
       <a
-        ref={magneticRef as React.RefObject<HTMLAnchorElement>}
+        ref={(node) => {
+          magneticRef.current = node;
+        }}
         href={href}
         className={classNames}
         {...rest}
@@ -131,12 +63,13 @@ export function Card({
     );
   }
 
-  const divProps = props as CardAsDiv;
   return (
     <div
-      ref={magneticRef as React.RefObject<HTMLDivElement>}
+      ref={(node) => {
+        magneticRef.current = node;
+      }}
       className={classNames}
-      {...divProps}
+      {...props}
     >
       {children}
     </div>

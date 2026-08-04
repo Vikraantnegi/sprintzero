@@ -12,6 +12,7 @@ export { Timeline } from "./Timeline";
 export type { TimelineStage } from "./Timeline";
 
 export { SectionLabel } from "./SectionLabel";
+export { MonoLabel } from "./MonoLabel";
 
 export { Nav } from "./Nav";
 export type { NavLink } from "./Nav";

@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { gsap, registerGsap, useGSAP } from "@/lib/gsap";
+import { cn } from "@/lib/cn";
 
 registerGsap();
 
@@ -24,7 +25,7 @@ export function Timeline({ stages, activeIndex, className }: TimelineProps) {
       const mm = gsap.matchMedia();
 
       mm.add("(prefers-reduced-motion: no-preference)", () => {
-        const segs = rootRef.current?.querySelectorAll(".timeline-seg--done");
+        const segs = rootRef.current?.querySelectorAll("[data-seg-done]");
         if (!segs?.length) return;
 
         gsap.fromTo(
@@ -44,7 +45,7 @@ export function Timeline({ stages, activeIndex, className }: TimelineProps) {
       });
 
       mm.add("(prefers-reduced-motion: reduce)", () => {
-        gsap.set(".timeline-seg--done", { scaleX: 1 });
+        gsap.set("[data-seg-done]", { scaleX: 1 });
       });
     },
     { scope: rootRef },
@@ -53,7 +54,10 @@ export function Timeline({ stages, activeIndex, className }: TimelineProps) {
   return (
     <div
       ref={rootRef}
-      className={["panel", className].filter(Boolean).join(" ")}
+      className={cn(
+        "rounded-lg border border-hairline bg-surface-1 p-space-7",
+        className,
+      )}
       role="list"
       aria-label="Pipeline progress"
     >
@@ -62,7 +66,7 @@ export function Timeline({ stages, activeIndex, className }: TimelineProps) {
         style={{ gridTemplateColumns: `repeat(${stages.length}, 1fr)` }}
       >
         <div
-          className="pointer-events-none absolute top-[6px] right-[10%] left-[10%] h-px bg-[var(--hairline)]"
+          className="pointer-events-none absolute top-[6px] right-[10%] left-[10%] h-px bg-hairline"
           aria-hidden
         />
 
@@ -73,14 +77,12 @@ export function Timeline({ stages, activeIndex, className }: TimelineProps) {
           return (
             <div
               key={`seg-${stages[i].id}`}
-              className={done ? "timeline-seg--done" : "timeline-seg--pending"}
-              style={{
-                position: "absolute",
-                top: 6,
-                left,
-                width,
-                transformOrigin: "left center",
-              }}
+              data-seg-done={done ? "" : undefined}
+              className={cn(
+                "absolute top-[6px] h-px origin-left",
+                done ? "bg-accent" : "bg-hairline",
+              )}
+              style={{ left, width }}
               aria-hidden
             />
           );
@@ -98,28 +100,28 @@ export function Timeline({ stages, activeIndex, className }: TimelineProps) {
               className="relative z-[1] flex flex-col items-center gap-space-4"
             >
               <span
-                className={[
-                  "timeline-node",
-                  done ? "timeline-node--done" : "",
-                  active ? "timeline-node--active" : "",
-                ]
-                  .filter(Boolean)
-                  .join(" ")}
+                className={cn(
+                  "size-[13px] rounded-full border",
+                  done || active
+                    ? "border-transparent bg-accent"
+                    : "border-hairline bg-surface-2",
+                  active && "animate-[pulse-accent_2s_var(--ease)_infinite]",
+                )}
                 aria-hidden
               />
               <span
-                className={[
-                  "font-mono text-[12px] uppercase",
+                className={cn(
+                  "font-mono text-meta uppercase",
                   active ? "text-accent" : done ? "text-text" : "text-faint",
-                ].join(" ")}
+                )}
               >
                 {stage.label}
               </span>
               <span
-                className={[
-                  "font-mono text-[11px]",
+                className={cn(
+                  "font-mono text-caption",
                   active ? "text-accent" : "text-faint",
-                ].join(" ")}
+                )}
               >
                 {status}
               </span>

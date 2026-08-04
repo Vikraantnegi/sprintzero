@@ -1,3 +1,4 @@
+import { cn } from "@/lib/cn";
 import { Card } from "./Card";
 
 type StatCardProps = {
@@ -21,13 +22,13 @@ export function StatCard({
     <Card
       magnetic={magnetic}
       forceHover={forceHover}
-      className={["flex flex-col gap-space-3", className].filter(Boolean).join(" ")}
+      className={cn("flex flex-col gap-space-3", className)}
     >
-      <p className="card__stat">
+      <p className="font-mono text-stat text-text">
         {value}
         {unit ? <span className="text-faint">{unit}</span> : null}
       </p>
-      <p className="font-mono text-[12px] uppercase tracking-[0.1em] text-faint">
+      <p className="font-mono text-meta uppercase tracking-[0.1em] text-faint">
         {label}
       </p>
     </Card>

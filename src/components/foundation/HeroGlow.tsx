@@ -1,3 +1,5 @@
+import { cn } from "@/lib/cn";
+
 type HeroGlowProps = {
   className?: string;
 };
@@ -5,8 +7,7 @@ type HeroGlowProps = {
 export function HeroGlow({ className }: HeroGlowProps) {
   return (
     <div
-      className={`pointer-events-none absolute ${className ?? ""}`}
-      style={{ background: "var(--hero-glow)" }}
+      className={cn("hero-glow pointer-events-none absolute", className)}
       aria-hidden
     />
   );

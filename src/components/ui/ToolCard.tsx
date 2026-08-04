@@ -1,3 +1,4 @@
+import { cn } from "@/lib/cn";
 import { Card } from "./Card";
 
 type ToolCardProps = {
@@ -22,36 +23,46 @@ export function ToolCard({
   const content = (
     <>
       <div className="flex items-center justify-between">
-        <span className="card__index">{index}</span>
-        <span className="card__glyph" aria-hidden />
+        <span
+          className={cn(
+            "font-mono text-meta text-faint transition-colors duration-base ease-sz",
+            "group-hover/card:text-accent",
+            forceHover && "text-accent",
+          )}
+        >
+          {index}
+        </span>
+        <span
+          className={cn(
+            "h-[10px] w-[10px] rotate-45 border border-hairline-strong transition-[border-color] duration-base ease-sz",
+            "group-hover/card:border-accent-glyph-hover",
+            forceHover && "border-accent-glyph-hover",
+          )}
+          aria-hidden
+        />
       </div>
       <div className="mt-space-6 flex flex-col gap-[6px]">
-        <p className="font-mono text-[15px] text-text">{name}</p>
-        <p className="font-mono text-[12px] uppercase tracking-[0.08em] text-faint">
+        <p className="font-mono text-ui font-normal text-text">{name}</p>
+        <p className="font-mono text-meta uppercase tracking-[0.08em] text-faint">
           {role}
         </p>
       </div>
     </>
   );
 
-  const classNames = ["flex flex-col", className].filter(Boolean).join(" ");
+  const shared = {
+    magnetic,
+    forceHover,
+    className: cn("group/card flex flex-col", className),
+  };
 
   if (href) {
     return (
-      <Card
-        href={href}
-        magnetic={magnetic}
-        forceHover={forceHover}
-        className={classNames}
-      >
+      <Card href={href} {...shared}>
         {content}
       </Card>
     );
   }
 
-  return (
-    <Card magnetic={magnetic} forceHover={forceHover} className={classNames}>
-      {content}
-    </Card>
-  );
+  return <Card {...shared}>{content}</Card>;
 }

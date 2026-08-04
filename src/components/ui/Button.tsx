@@ -1,50 +1,39 @@
-import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react";
+import type { ReactNode } from "react";
+import { cn } from "@/lib/cn";
+import { isLinkProps, type ButtonLikeProps } from "@/lib/polymorphic";
 
 type ButtonVariant = "primary" | "ghost" | "text";
 type ButtonSize = "default" | "small";
 
-type SharedProps = {
+type ButtonExtras = {
   variant?: ButtonVariant;
   size?: ButtonSize;
   trailingArrow?: boolean;
   children: ReactNode;
   className?: string;
+  /** Specimen preview: show focus ring without focus */
+  forceFocus?: boolean;
+  /** Specimen preview: show hover styles without hover */
+  forceHover?: boolean;
 };
 
-type ButtonAsButton = SharedProps &
-  Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children" | "className"> & {
-    href?: undefined;
-  };
+export type ButtonProps = ButtonLikeProps<ButtonExtras>;
 
-type ButtonAsLink = SharedProps &
-  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "children" | "className"> & {
-    href: string;
-  };
+const baseBtn =
+  "inline-flex items-center font-body font-medium rounded-sm border border-transparent cursor-pointer no-underline transition-[background,border-color,color] duration-fast ease-sz disabled:opacity-40 disabled:cursor-not-allowed group";
 
-export type ButtonProps = ButtonAsButton | ButtonAsLink;
+const variantClass: Record<ButtonVariant, string> = {
+  primary:
+    "bg-accent text-bg hover:bg-accent-hover focus-visible:outline-none focus-visible:shadow-focus-accent disabled:hover:bg-accent",
+  ghost:
+    "bg-transparent text-text border-hairline hover:bg-surface-1 hover:border-hairline-strong focus-visible:outline-none disabled:hover:bg-transparent disabled:hover:border-hairline",
+  text: "bg-transparent text-accent font-medium border-0 border-b border-accent-underline rounded-none pb-[2px] px-0 py-0 hover:text-accent-hover hover:border-accent-hover focus-visible:outline-none",
+};
 
-function classes({
-  variant,
-  size,
-  className,
-}: {
-  variant: ButtonVariant;
-  size: ButtonSize;
-  className?: string;
-}) {
-  if (variant === "text") {
-    return ["link", className].filter(Boolean).join(" ");
-  }
-
-  return [
-    "btn",
-    variant === "primary" ? "btn-primary" : "btn-ghost",
-    size === "small" ? "btn-sm" : "",
-    className,
-  ]
-    .filter(Boolean)
-    .join(" ");
-}
+const sizeClass: Record<ButtonSize, string> = {
+  default: "text-ui gap-gap-btn px-space-5 py-space-3",
+  small: "text-ui-sm gap-space-2 px-space-4 py-space-2",
+};
 
 export function Button({
   variant = "primary",
@@ -52,22 +41,43 @@ export function Button({
   trailingArrow = false,
   children,
   className,
+  forceFocus = false,
+  forceHover = false,
   ...props
 }: ButtonProps) {
+  const classNames = cn(
+    variant === "text" ? variantClass.text : baseBtn,
+    variant !== "text" && variantClass[variant],
+    variant !== "text" && sizeClass[size],
+    variant === "text" && "text-ui",
+    forceFocus && variant === "primary" && "shadow-focus-accent",
+    forceHover &&
+      variant === "primary" &&
+      "bg-accent-hover",
+    forceHover &&
+      variant === "ghost" &&
+      "bg-surface-1 border-hairline-strong",
+    forceHover &&
+      variant === "text" &&
+      "text-accent-hover border-accent-hover",
+    className,
+  );
+
   const content = (
     <>
       {children}
       {trailingArrow && variant !== "text" ? (
-        <span className="arrow" aria-hidden>
+        <span
+          className="font-mono transition-transform duration-fast ease-sz group-hover:translate-x-[3px] group-disabled:translate-x-0"
+          aria-hidden
+        >
           →
         </span>
       ) : null}
     </>
   );
 
-  const classNames = classes({ variant, size, className });
-
-  if ("href" in props && props.href) {
+  if (isLinkProps(props)) {
     const { href, ...rest } = props;
     return (
       <a href={href} className={classNames} {...rest}>
@@ -76,9 +86,9 @@ export function Button({
     );
   }
 
-  const buttonProps = props as ButtonAsButton;
+  const { type, ...rest } = props;
   return (
-    <button type={buttonProps.type ?? "button"} className={classNames} {...buttonProps}>
+    <button type={type ?? "button"} className={classNames} {...rest}>
       {content}
     </button>
   );

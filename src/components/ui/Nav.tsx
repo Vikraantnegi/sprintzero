@@ -2,7 +2,10 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { cn } from "@/lib/cn";
+import { tokens } from "@/lib/tokens";
 import { Button } from "./Button";
+import { MonoLabel } from "./MonoLabel";
 
 export type NavLink = {
   href: string;
@@ -13,7 +16,6 @@ type NavProps = {
   links?: NavLink[];
   activeHref?: string;
   ctaHref?: string;
-  /** Force scrolled appearance for specimen previews */
   forceScrolled?: boolean;
   className?: string;
 };
@@ -37,7 +39,8 @@ export function Nav({
   useEffect(() => {
     if (forceScrolled != null) return;
 
-    const onScroll = () => setScrolled(window.scrollY > 64);
+    const onScroll = () =>
+      setScrolled(window.scrollY > tokens.interaction.navScrollAt);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -47,38 +50,50 @@ export function Nav({
 
   return (
     <header
-      className={[
-        "nav flex items-center justify-between gap-space-6",
-        isScrolled ? "nav--scrolled" : "",
+      className={cn(
+        "flex items-center justify-between gap-space-6 px-space-6 transition-[padding,background-color] duration-base ease-sz",
+        isScrolled
+          ? "border-b border-hairline bg-nav-scrolled py-space-3 backdrop-blur-[12px]"
+          : "bg-transparent py-space-5",
         className,
-      ]
-        .filter(Boolean)
-        .join(" ")}
+      )}
     >
-      <Link href="/" className="flex items-baseline gap-[10px] !border-0 !p-0">
+      <Link href="/" className="flex items-baseline gap-gap-btn no-underline">
         <span
-          className="font-display text-text transition-[font-size] duration-[var(--dur-base)] ease-[var(--ease)]"
-          style={{ fontSize: isScrolled ? 18 : 20, letterSpacing: "-0.01em" }}
+          className={cn(
+            "font-display text-text transition-[font-size] duration-base ease-sz",
+            isScrolled ? "text-wordmark-sm" : "text-wordmark",
+          )}
         >
           SprintZero.
         </span>
         {!isScrolled ? (
-          <span className="font-mono text-[11px] tracking-[0.1em] text-faint">
+          <MonoLabel size="caption" className="tracking-[0.1em]">
             /STUDIO
-          </span>
+          </MonoLabel>
         ) : null}
       </Link>
 
-      <nav className="hidden items-center gap-space-6 md:flex" aria-label="Primary">
-        {links.map((link) => (
-          <a
-            key={link.href}
-            href={link.href}
-            aria-current={activeHref === link.href ? "page" : undefined}
-          >
-            {link.label}
-          </a>
-        ))}
+      <nav
+        className="hidden items-center gap-space-6 md:flex"
+        aria-label="Primary"
+      >
+        {links.map((link) => {
+          const current = activeHref === link.href;
+          return (
+            <a
+              key={link.href}
+              href={link.href}
+              aria-current={current ? "page" : undefined}
+              className={cn(
+                "text-small text-muted no-underline transition-colors duration-fast ease-sz hover:text-text",
+                current && "border-b border-accent pb-[2px] text-text",
+              )}
+            >
+              {link.label}
+            </a>
+          );
+        })}
       </nav>
 
       <Button href={ctaHref} size="small" trailingArrow>

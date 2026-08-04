@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Toggle } from "@/components/ui";
+import { MonoLabel, Toggle } from "@/components/ui";
 
 const PRICES = {
   inr: "₹ 1,20,000",
@@ -22,12 +22,10 @@ export function CurrencyDemo() {
         value={currency}
         onChange={setCurrency}
       />
-      <p className="font-mono text-[11px] text-faint">
+      <MonoLabel size="caption">
         live · active pill = accent-glow fill + amber label
-      </p>
-      <p className="font-display text-[40px] leading-none tracking-[-0.02em] text-text">
-        {PRICES[currency]}
-      </p>
+      </MonoLabel>
+      <p className="font-display text-price text-text">{PRICES[currency]}</p>
     </div>
   );
 }

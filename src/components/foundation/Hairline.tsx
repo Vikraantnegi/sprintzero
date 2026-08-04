@@ -1,17 +1,19 @@
+import { cn } from "@/lib/cn";
+
 type HairlineProps = {
   variant?: "edge" | "inner";
   className?: string;
 };
 
 export function Hairline({ variant = "edge", className }: HairlineProps) {
-  const bg =
-    variant === "inner" ? "var(--divider)" : "var(--hairline)";
-
   return (
     <div
       role="separator"
-      className={`h-px w-full ${className ?? ""}`}
-      style={{ backgroundColor: bg }}
+      className={cn(
+        "h-px w-full",
+        variant === "inner" ? "bg-divider" : "bg-hairline",
+        className,
+      )}
     />
   );
 }

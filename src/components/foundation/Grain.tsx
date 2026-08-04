@@ -1,8 +1,7 @@
 export function Grain() {
   return (
     <div
-      className="pointer-events-none fixed inset-0 z-50 mix-blend-screen"
-      style={{ opacity: "var(--grain-opacity)" }}
+      className="pointer-events-none fixed inset-0 z-50 mix-blend-screen opacity-[var(--grain-opacity)]"
       aria-hidden
     >
       <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg">

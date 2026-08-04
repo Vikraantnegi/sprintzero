@@ -1,3 +1,4 @@
+import { cn } from "@/lib/cn";
 import { Button } from "./Button";
 import { Card } from "./Card";
 
@@ -24,11 +25,16 @@ export function FeatureCard({
     <Card
       magnetic={magnetic}
       forceHover={forceHover}
-      className={["flex flex-col gap-space-4", className].filter(Boolean).join(" ")}
+      className={cn("flex flex-col gap-space-4", className)}
     >
       <h3 className="font-display text-h3 text-text">{title}</h3>
       <p className="text-body text-muted">{body}</p>
-      <Button variant="text" href={linkHref} className="self-start">
+      <Button
+        variant="text"
+        href={linkHref}
+        className="self-start"
+        forceHover={forceHover}
+      >
         {linkLabel}
       </Button>
     </Card>

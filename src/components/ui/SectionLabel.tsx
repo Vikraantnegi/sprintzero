@@ -1,3 +1,6 @@
+import { cn } from "@/lib/cn";
+import { MonoLabel } from "./MonoLabel";
+
 type SectionLabelProps = {
   number: string;
   name: string;
@@ -12,9 +15,9 @@ export function SectionLabel({
   className,
 }: SectionLabelProps) {
   const label = (
-    <p className={["section-label", className].filter(Boolean).join(" ")}>
+    <MonoLabel className={cn("block", className)}>
       {number} — {name}
-    </p>
+    </MonoLabel>
   );
 
   if (!trailingRule) return label;
@@ -22,11 +25,7 @@ export function SectionLabel({
   return (
     <div className="flex items-center gap-space-4">
       {label}
-      <div
-        className="h-px flex-1 bg-[var(--divider)]"
-        role="presentation"
-        aria-hidden
-      />
+      <div className="h-px flex-1 bg-divider" role="presentation" aria-hidden />
     </div>
   );
 }

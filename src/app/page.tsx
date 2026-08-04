@@ -10,11 +10,17 @@ export default function Home() {
         </h1>
         <p className="mt-space-3 max-w-md text-body text-muted">
           Foundation ready. Preview{" "}
-          <a href="/tokens" className="link">
+          <a
+            href="/tokens"
+            className="border-b border-accent-underline pb-[2px] font-medium text-accent transition-colors duration-fast ease-sz hover:border-accent-hover hover:text-accent-hover"
+          >
             tokens
           </a>{" "}
           and{" "}
-          <a href="/components" className="link">
+          <a
+            href="/components"
+            className="border-b border-accent-underline pb-[2px] font-medium text-accent transition-colors duration-fast ease-sz hover:border-accent-hover hover:text-accent-hover"
+          >
             components
           </a>
           .

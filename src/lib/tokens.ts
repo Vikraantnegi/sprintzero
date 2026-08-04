@@ -1,5 +1,6 @@
 // Single source of truth for SprintZero design tokens — import from here; never hardcode values elsewhere.
 // Stack note: Next.js 16.2.12 (stable current) used instead of brief’s Next 15.
+// Values match SprintZero Tokens Specimen + Components specimen interaction opacities.
 
 export const tokens = {
   color: {
@@ -14,6 +15,12 @@ export const tokens = {
     accentGlow: "rgba(224, 168, 50, 0.12)",
     hairline: "rgba(232, 230, 225, 0.08)",
     divider: "rgba(232, 230, 225, 0.06)",
+    hairlineStrong: "rgba(232, 230, 225, 0.2)",
+    accentUnderline: "rgba(224, 168, 50, 0.35)",
+    accentBorderHover: "rgba(224, 168, 50, 0.3)",
+    accentShadow: "rgba(224, 168, 50, 0.06)",
+    accentGlyphHover: "rgba(224, 168, 50, 0.5)",
+    navScrolled: "rgba(10, 10, 10, 0.88)",
   },
   type: {
     displayXl: {
@@ -53,6 +60,54 @@ export const tokens = {
       weight: 400,
       textTransform: "uppercase" as const,
     },
+    ui: {
+      size: "0.9375rem",
+      lineHeight: 1,
+      letterSpacing: "0",
+      weight: 500,
+    },
+    uiSm: {
+      size: "0.8125rem",
+      lineHeight: 1,
+      letterSpacing: "0",
+      weight: 500,
+    },
+    caption: {
+      size: "0.6875rem",
+      lineHeight: 1.6,
+      letterSpacing: "0",
+      weight: 400,
+    },
+    meta: {
+      size: "0.75rem",
+      lineHeight: 1.2,
+      letterSpacing: "0.1em",
+      weight: 400,
+    },
+    wordmark: {
+      size: "1.25rem",
+      lineHeight: 1,
+      letterSpacing: "-0.01em",
+      weight: 400,
+    },
+    wordmarkSm: {
+      size: "1.125rem",
+      lineHeight: 1,
+      letterSpacing: "-0.01em",
+      weight: 400,
+    },
+    stat: {
+      size: "3rem",
+      lineHeight: 1,
+      letterSpacing: "-0.02em",
+      weight: 400,
+    },
+    price: {
+      size: "2.5rem",
+      lineHeight: 1,
+      letterSpacing: "-0.02em",
+      weight: 400,
+    },
   },
   space: {
     1: 4,
@@ -65,8 +120,10 @@ export const tokens = {
     8: 64,
     9: 96,
     10: 128,
+    gapBtn: 10,
   },
   radius: {
+    xs: 3,
     sm: 4,
     md: 8,
     lg: 12,
@@ -75,11 +132,22 @@ export const tokens = {
     ease: "cubic-bezier(0.2, 0, 0, 1)",
     durFast: "120ms",
     durBase: "200ms",
+    durDraw: "600ms",
+    durPulse: "2s",
+    durMarquee: "40s",
   },
   depth: {
     grainOpacity: 0.04,
     heroGlow: 0.12,
     cardTexture: 0.03,
+  },
+  interaction: {
+    magneticClamp: 4,
+    magneticLerp: 0.15,
+    navScrollAt: 64,
+    navBlur: 12,
+    focusRing: 3,
+    nodeSize: 13,
   },
 } as const;
 
