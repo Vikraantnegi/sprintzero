@@ -9,9 +9,13 @@ export default function Home() {
           Blank slate
         </h1>
         <p className="mt-space-3 max-w-md text-body text-muted">
-          Foundation ready. Preview tokens at{" "}
-          <a href="/tokens" className="text-accent hover:text-accent-hover">
-            /tokens
+          Foundation ready. Preview{" "}
+          <a href="/tokens" className="link">
+            tokens
+          </a>{" "}
+          and{" "}
+          <a href="/components" className="link">
+            components
           </a>
           .
         </p>
