@@ -75,6 +75,11 @@
   --focus-ring: 3px;
   --node-size: 13px;
   --nav-blur: 12px;
+
+  /* Stage 3 layout */
+  --bp-mobile: 768px;
+  --content-max: 1120px;
+  --gutter: var(--space-7);
 }
 
 @theme inline {
@@ -214,6 +219,9 @@
 }
 
 @keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
   to {
     transform: translateX(-50%);
   }
@@ -239,12 +247,17 @@
 }
 
 @layer base {
+  html {
+    overflow-x: clip;
+  }
+
   body {
     background-color: var(--bg);
     color: var(--text);
     font-family: var(--font-body), system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
   }
 
   ::selection {
@@ -259,5 +272,286 @@
   *::after {
     animation: none !important;
     transition: none !important;
+  }
+
+  html {
+    scroll-snap-type: none;
+  }
+}
+
+/* ---- Stage 3: layout shell ---- */
+
+html.sz-snap {
+  scroll-snap-type: y proximity;
+}
+
+.section {
+  min-height: 100svh;
+  width: 100%;
+  max-width: 100%;
+  display: grid;
+  place-items: center;
+  padding: var(--space-9) var(--gutter);
+  scroll-snap-align: start;
+  overflow-x: clip;
+}
+
+.section__inner {
+  width: 100%;
+  max-width: var(--content-max);
+  min-width: 0;
+  margin-inline: auto;
+}
+
+.section--terminal {
+  min-height: auto;
+}
+
+.section--hero {
+  padding-top: calc(var(--space-9) + var(--space-8));
+}
+
+/* Hero: desktop 2-col; mobile headline → mark → CTAs → stats (2+1) */
+.hero-grid {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  gap: var(--space-6);
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "headline mark"
+    "ctas stats";
+  align-items: start;
+}
+
+.hero-grid__headline {
+  grid-area: headline;
+  min-width: 0;
+}
+
+.hero-grid__mark {
+  grid-area: mark;
+  min-width: 0;
+}
+
+.hero-grid__ctas {
+  grid-area: ctas;
+  min-width: 0;
+}
+
+.hero-grid__stats {
+  grid-area: stats;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+}
+
+.split > * {
+  min-width: 0;
+}
+
+.stack-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+  width: 100%;
+  min-width: 0;
+}
+
+/* Ten tools: last cell spans full row on 3-col desktop */
+.stack-grid > :last-child:nth-child(10) {
+  grid-column: 1 / -1;
+}
+
+.engine-strip {
+  display: grid;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  gap: var(--space-2);
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.engine-strip > * {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.engine-strip__hint {
+  display: none;
+}
+
+/* BrandStrip marquee — CSS-owned so the loop isn't lost to utility purge */
+.brand-strip {
+  width: 100%;
+  overflow: hidden;
+  border-block: 1px solid var(--hairline);
+  background: var(--bg);
+  padding-block: var(--space-4);
+}
+
+.brand-strip__track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: marquee var(--dur-marquee) linear infinite;
+}
+
+.brand-strip:hover .brand-strip__track {
+  animation-play-state: paused;
+}
+
+.brand-strip__content {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--space-6);
+  padding-right: var(--space-6);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: var(--type-meta);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.brand-strip__content span {
+  white-space: nowrap;
+}
+
+.brand-strip__dot {
+  color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  :root {
+    --type-display-xl: 2.75rem;
+    --type-display-l: 2.125rem;
+    --type-h3: 1.25rem;
+    --type-body: 1rem;
+    --type-small: 0.875rem;
+    --type-mono-label: 0.75rem;
+    --gutter: var(--space-6);
+  }
+
+  .section {
+    padding: var(--space-8) var(--gutter);
+  }
+
+  .section--hero {
+    padding-top: calc(var(--space-8) + var(--space-8));
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "headline"
+      "mark"
+      "ctas"
+      "stats";
+  }
+
+  .hero-grid__stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hero-grid__stats > :last-child {
+    grid-column: 1 / -1;
+  }
+
+  .split {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  .stack-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stack-grid > :last-child:nth-child(10) {
+    grid-column: auto;
+  }
+
+  .engine-strip {
+    display: flex;
+    gap: var(--space-4);
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 24px,
+      #000 calc(100% - 48px),
+      transparent 100%
+    );
+  }
+
+  .engine-strip > * {
+    flex: 0 0 88px;
+    width: 88px;
+    max-width: 88px;
+    min-width: 88px;
+    scroll-snap-align: start;
+    overflow: hidden;
+  }
+
+  .engine-strip__hint {
+    display: block;
+  }
+
+  @media (max-width: 380px) {
+    .stack-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-grid__stats {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-grid__stats > :last-child {
+      grid-column: auto;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-strip__track {
+    animation: none;
+  }
+}
+
+@supports not (scroll-snap-type: x mandatory) {
+  @media (max-width: 768px) {
+    .engine-strip {
+      display: flex;
+      flex-direction: column;
+      overflow-x: visible;
+      mask-image: none;
+      gap: var(--space-2);
+    }
+
+    .engine-strip > * {
+      flex: none;
+      width: 100%;
+      min-height: 44px;
+    }
+
+    .engine-strip__hint {
+      display: none;
+    }
   }
 }

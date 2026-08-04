@@ -1,5 +1,3 @@
-"use client";
-
 import { cn } from "@/lib/cn";
 
 export type ToggleOption<T extends string = string> = {
@@ -25,7 +23,7 @@ export function Toggle<T extends string = string>({
   return (
     <div
       className={cn(
-        "inline-flex rounded-sm border border-hairline bg-surface-2 p-[3px]",
+        "inline-flex w-full rounded-sm border border-hairline bg-surface-2 p-[3px] md:w-auto",
         className,
       )}
       role="group"
@@ -40,7 +38,7 @@ export function Toggle<T extends string = string>({
             aria-pressed={pressed}
             onClick={() => onChange(option.value)}
             className={cn(
-              "cursor-pointer rounded-xs border-0 px-space-3 py-space-2 font-mono text-ui-sm transition-[color,background-color] duration-fast ease-sz",
+              "min-h-[44px] flex-1 cursor-pointer rounded-xs border-0 px-space-3 py-space-2 font-mono text-ui-sm transition-[color,background-color] duration-fast ease-sz md:min-h-0 md:min-w-[74px] md:flex-none",
               pressed
                 ? "bg-accent-glow text-accent"
                 : "bg-transparent text-muted",

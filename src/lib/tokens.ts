@@ -149,6 +149,13 @@ export const tokens = {
     focusRing: 3,
     nodeSize: 13,
   },
+  layout: {
+    bpMobile: 768,
+    contentMax: 1120,
+    stackNested: 380,
+    engineCell: 88,
+    minHit: 44,
+  },
 } as const;
 
 export type Tokens = typeof tokens;

@@ -10,13 +10,13 @@ const PHRASES = [
   "@ASUMACODES",
 ] as const;
 
-function Track() {
+function Content({ duplicate = false }: { duplicate?: boolean }) {
   return (
-    <div className="flex items-center gap-space-6 pr-space-6 font-mono text-meta uppercase tracking-[0.1em] text-muted">
+    <div className="brand-strip__content" aria-hidden={duplicate || undefined}>
       {PHRASES.map((phrase) => (
-        <span key={phrase} className="flex items-center gap-space-6">
+        <span key={`${duplicate ? "b" : "a"}-${phrase}`} className="flex items-center gap-space-6">
           <span>{phrase}</span>
-          <span className="text-accent" aria-hidden>
+          <span className="brand-strip__dot" aria-hidden>
             ·
           </span>
         </span>
@@ -29,18 +29,16 @@ type BrandStripProps = {
   className?: string;
 };
 
+/**
+ * Marquee ticker from Stage 2. Two identical tracks + translateX(-50%) =
+ * seamless infinite loop. Pause on hover; static under reduced-motion.
+ */
 export function BrandStrip({ className }: BrandStripProps) {
   return (
-    <div
-      className={cn(
-        "group overflow-hidden border-y border-hairline py-space-4",
-        className,
-      )}
-      aria-hidden
-    >
-      <div className="flex w-max animate-[marquee_40s_linear_infinite] group-hover:[animation-play-state:paused] motion-reduce:animate-none">
-        <Track />
-        <Track />
+    <div className={cn("brand-strip group", className)} role="presentation" aria-hidden>
+      <div className="brand-strip__track">
+        <Content />
+        <Content duplicate />
       </div>
     </div>
   );

@@ -23,7 +23,7 @@ type NavProps = {
 const DEFAULT_LINKS: NavLink[] = [
   { href: "#build", label: "What we build" },
   { href: "#work", label: "How we work" },
-  { href: "#pipeline", label: "Pipeline" },
+  { href: "#engine", label: "Pipeline" },
   { href: "#pricing", label: "Pricing" },
 ];
 
@@ -51,31 +51,37 @@ export function Nav({
   return (
     <header
       className={cn(
-        "flex items-center justify-between gap-space-6 px-space-6 transition-[padding,background-color] duration-base ease-sz",
+        "fixed inset-x-0 top-0 z-40 box-border flex w-full max-w-[100vw] items-center justify-between gap-space-4 px-[var(--gutter)] transition-[padding,background-color] duration-base ease-sz",
         isScrolled
           ? "border-b border-hairline bg-nav-scrolled py-space-3 backdrop-blur-[12px]"
           : "bg-transparent py-space-5",
         className,
       )}
     >
-      <Link href="/" className="flex items-baseline gap-gap-btn no-underline">
+      <Link
+        href="/"
+        className="flex min-w-0 shrink items-baseline gap-gap-btn no-underline"
+      >
         <span
           className={cn(
-            "font-display text-text transition-[font-size] duration-base ease-sz",
+            "truncate font-display text-text transition-[font-size] duration-base ease-sz",
             isScrolled ? "text-wordmark-sm" : "text-wordmark",
           )}
         >
           SprintZero.
         </span>
         {!isScrolled ? (
-          <MonoLabel size="caption" className="tracking-[0.1em]">
+          <MonoLabel
+            size="caption"
+            className="hidden tracking-[0.1em] sm:inline"
+          >
             /STUDIO
           </MonoLabel>
         ) : null}
       </Link>
 
       <nav
-        className="hidden items-center gap-space-6 md:flex"
+        className="hidden min-w-0 items-center gap-space-5 md:flex"
         aria-label="Primary"
       >
         {links.map((link) => {
@@ -86,7 +92,7 @@ export function Nav({
               href={link.href}
               aria-current={current ? "page" : undefined}
               className={cn(
-                "text-small text-muted no-underline transition-colors duration-fast ease-sz hover:text-text",
+                "whitespace-nowrap text-small text-muted no-underline transition-colors duration-fast ease-sz hover:text-text",
                 current && "border-b border-accent pb-[2px] text-text",
               )}
             >
@@ -96,7 +102,12 @@ export function Nav({
         })}
       </nav>
 
-      <Button href={ctaHref} size="small" trailingArrow>
+      <Button
+        href={ctaHref}
+        size="small"
+        trailingArrow
+        className="shrink-0"
+      >
         Start a sprint
       </Button>
     </header>

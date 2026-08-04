@@ -45,7 +45,8 @@ export function Footer({ className }: FooterProps) {
 
         <div>
           <MonoLabel className="mb-space-4 block">Channels</MonoLabel>
-          <ul className="flex flex-col gap-space-3">
+          {/* Desktop: full labels. Mobile: single @AsumaCodes social row. */}
+          <ul className="hidden flex-col gap-space-3 md:flex">
             {CHANNELS.map((link) => (
               <li key={link.href}>
                 <a
@@ -58,6 +59,36 @@ export function Footer({ className }: FooterProps) {
                 </a>
               </li>
             ))}
+          </ul>
+          <ul className="flex flex-wrap items-center gap-x-space-3 gap-y-space-2 md:hidden">
+            <li>
+              <span className="font-mono text-meta uppercase tracking-[0.1em] text-faint">
+                @AsumaCodes
+              </span>
+            </li>
+            <li className="font-mono text-meta text-faint" aria-hidden>
+              —
+            </li>
+            {CHANNELS.map((link, i) => {
+              const short = link.label.split(" · ")[0];
+              return (
+                <li key={link.href} className="flex items-center gap-space-3">
+                  {i > 0 ? (
+                    <span className="font-mono text-meta text-faint" aria-hidden>
+                      ·
+                    </span>
+                  ) : null}
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="font-mono text-meta uppercase tracking-[0.1em] text-muted no-underline transition-colors duration-fast ease-sz hover:text-text"
+                  >
+                    {short}
+                  </a>
+                </li>
+              );
+            })}
           </ul>
         </div>
 
