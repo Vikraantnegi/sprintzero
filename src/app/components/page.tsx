@@ -256,7 +256,8 @@ export default function ComponentsPage() {
           <div className="flex flex-col gap-space-3 overflow-hidden rounded-lg border border-hairline">
             <Nav forceScrolled={false} activeHref="#pipeline" />
             <Caption className="px-space-4 pb-space-3">
-              top state · transparent, no border, 20/32 padding
+              top state · transparent, no border, 20/32 padding. ≤768: wordmark
+              18px + two-line hamburger → 60% right drawer.
             </Caption>
           </div>
           <div className="flex flex-col gap-space-3 overflow-hidden rounded-lg border border-hairline">

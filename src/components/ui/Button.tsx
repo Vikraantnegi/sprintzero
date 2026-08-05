@@ -20,13 +20,13 @@ type ButtonExtras = {
 export type ButtonProps = ButtonLikeProps<ButtonExtras>;
 
 const baseBtn =
-  "inline-flex items-center font-body font-medium rounded-sm border border-transparent cursor-pointer no-underline transition-[background,border-color,color] duration-fast ease-sz disabled:opacity-40 disabled:cursor-not-allowed group";
+  "inline-flex items-center font-body font-medium rounded-sm border cursor-pointer no-underline transition-[background,border-color,color] duration-fast ease-sz disabled:opacity-40 disabled:cursor-not-allowed group";
 
 const variantClass: Record<ButtonVariant, string> = {
   primary:
-    "bg-accent text-bg hover:bg-accent-hover focus-visible:outline-none focus-visible:shadow-focus-accent disabled:hover:bg-accent",
+    "border-transparent bg-accent text-bg hover:bg-accent-hover focus-visible:outline-none focus-visible:shadow-focus-accent disabled:hover:bg-accent",
   ghost:
-    "bg-transparent text-text border-hairline hover:bg-surface-1 hover:border-hairline-strong focus-visible:outline-none disabled:hover:bg-transparent disabled:hover:border-hairline",
+    "border-hairline bg-transparent text-text hover:bg-surface-1 hover:border-hairline-strong focus-visible:outline-none disabled:hover:bg-transparent disabled:hover:border-hairline",
   text: "bg-transparent text-accent font-medium border-0 border-b border-accent-underline rounded-none pb-[2px] px-0 py-0 hover:text-accent-hover hover:border-accent-hover focus-visible:outline-none",
 };
 

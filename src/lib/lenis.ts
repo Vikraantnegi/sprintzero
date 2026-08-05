@@ -2,9 +2,9 @@
 
 import { useEffect, useRef } from "react";
 import Lenis from "lenis";
-import { tokens } from "@/lib/tokens";
+import { gsap, registerGsap, ScrollTrigger } from "@/lib/gsap";
 
-// Stack note: `lenis` package (stable current; not @studio-freight/lenis).
+registerGsap();
 
 type UseLenisOptions = {
   /** When false, Lenis does not instantiate. Default false. */
@@ -18,8 +18,10 @@ function prefersReducedMotion(): boolean {
 
 /**
  * Smooth-scroll via Lenis. Skips init when `enabled` is false or
- * `prefers-reduced-motion: reduce`. CSS proximity snap coexists with Lenis
- * (mandatory snap fights the virtual scroll).
+ * `prefers-reduced-motion: reduce`.
+ *
+ * Shared clock: Lenis RAF is driven by gsap.ticker (autoRaf off) and
+ * ScrollTrigger.update runs on Lenis scroll — one loop, no dual RAF fight.
  */
 export function useLenis({ enabled = false }: UseLenisOptions = {}) {
   const lenisRef = useRef<Lenis | null>(null);
@@ -29,18 +31,31 @@ export function useLenis({ enabled = false }: UseLenisOptions = {}) {
     if (prefersReducedMotion()) return;
 
     const lenis = new Lenis({
-      // tokens.motion.ease is cubic-bezier(0.2, 0, 0, 1) — Lenis expects a function;
-      // Stage 4 can parse or swap to a matching ease curve.
-      autoRaf: true,
+      // Higher lerp = less sticky lag on content-height sections.
+      lerp: 0.12,
+      duration: 0.9,
+      smoothWheel: true,
+      autoRaf: false,
     });
 
     lenisRef.current = lenis;
 
-    // Stage 4: sync ScrollTrigger on lenis scroll —
-    // lenis.on("scroll", ScrollTrigger.update);
-    void tokens.motion.ease;
+    lenis.on("scroll", ScrollTrigger.update);
+
+    const onTick = (time: number) => {
+      lenis.raf(time * 1000);
+    };
+    gsap.ticker.add(onTick);
+    gsap.ticker.lagSmoothing(0);
+
+    // Layout + fonts may settle after first paint — refresh ST once.
+    const refreshId = window.requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
+    });
 
     return () => {
+      window.cancelAnimationFrame(refreshId);
+      gsap.ticker.remove(onTick);
       lenis.destroy();
       lenisRef.current = null;
     };

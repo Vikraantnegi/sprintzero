@@ -23,27 +23,19 @@ export function ToolCard({
   const content = (
     <>
       <div className="flex items-center justify-between">
-        <span
-          className={cn(
-            "font-mono text-meta text-faint transition-colors duration-base ease-sz",
-            "group-hover/card:text-accent",
-            forceHover && "text-accent",
-          )}
-        >
+        <span className="font-mono text-meta text-faint">
           {index}
         </span>
         <span
-          className={cn(
-            "h-[10px] w-[10px] rotate-45 border border-hairline-strong transition-[border-color] duration-base ease-sz",
-            "group-hover/card:border-accent-glyph-hover",
-            forceHover && "border-accent-glyph-hover",
-          )}
+          className="h-[10px] w-[10px] rotate-45 border border-hairline-strong max-md:h-[8px] max-md:w-[8px]"
           aria-hidden
         />
       </div>
-      <div className="mt-space-6 flex flex-col gap-[6px]">
-        <p className="font-mono text-ui font-normal text-text">{name}</p>
-        <p className="font-mono text-meta uppercase tracking-[0.08em] text-faint">
+      <div className="mt-space-6 flex min-w-0 flex-col gap-[6px] max-md:mt-space-4 max-md:gap-space-1">
+        <p className="truncate whitespace-nowrap font-mono text-ui font-normal text-text max-md:text-small">
+          {name}
+        </p>
+        <p className="font-mono text-meta uppercase tracking-[0.06em] text-faint max-md:text-caption">
           {role}
         </p>
       </div>
@@ -53,7 +45,10 @@ export function ToolCard({
   const shared = {
     magnetic,
     forceHover,
-    className: cn("group/card flex flex-col", className),
+    className: cn(
+      "group/card flex min-w-0 flex-col max-md:!p-space-4",
+      className,
+    ),
   };
 
   if (href) {

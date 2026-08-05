@@ -9,7 +9,12 @@ export { FeatureCard } from "./FeatureCard";
 export { StatCard } from "./StatCard";
 
 export { Timeline } from "./Timeline";
-export type { TimelineStage } from "./Timeline";
+export type {
+  EngineStage,
+  TimelineStage,
+  SprintStep,
+  TimelineProps,
+} from "./Timeline";
 
 export { SectionLabel } from "./SectionLabel";
 export { MonoLabel } from "./MonoLabel";

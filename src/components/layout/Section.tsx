@@ -8,6 +8,8 @@ type SectionProps = {
   trailingRule?: boolean;
   terminal?: boolean;
   hero?: boolean;
+  /** Full-bleed slot pinned to the section edge (e.g. BrandStrip). */
+  bleed?: React.ReactNode;
   variant?: "default";
   className?: string;
   innerClassName?: string;
@@ -21,6 +23,7 @@ export function Section({
   trailingRule,
   terminal = false,
   hero = false,
+  bleed,
   className,
   innerClassName,
   children,
@@ -49,6 +52,7 @@ export function Section({
         ) : null}
         {children}
       </div>
+      {bleed ? <div className="section__bleed">{bleed}</div> : null}
     </section>
   );
 }

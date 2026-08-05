@@ -30,6 +30,7 @@ const cardBase = cn(
   "[--mx:0px] [--my:0px]",
   "hover:border-accent-border-hover hover:shadow-accent-card",
   "hover:[transform:translate3d(var(--mx),calc(var(--my)-4px),0)]",
+  "motion-reduce:hover:shadow-none motion-reduce:hover:[transform:none]",
 );
 
 const cardForceHover = cn(

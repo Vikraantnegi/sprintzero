@@ -38,7 +38,7 @@ export function Toggle<T extends string = string>({
             aria-pressed={pressed}
             onClick={() => onChange(option.value)}
             className={cn(
-              "min-h-[44px] flex-1 cursor-pointer rounded-xs border-0 px-space-3 py-space-2 font-mono text-ui-sm transition-[color,background-color] duration-fast ease-sz md:min-h-0 md:min-w-[74px] md:flex-none",
+              "min-h-[44px] flex-1 cursor-pointer rounded-xs border-0 px-space-3 py-space-2 font-mono text-ui-sm transition-[color,background-color] duration-fast ease-sz motion-reduce:transition-none md:min-h-0 md:min-w-[74px] md:flex-none",
               pressed
                 ? "bg-accent-glow text-accent"
                 : "bg-transparent text-muted",
