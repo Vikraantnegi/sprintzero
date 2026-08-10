@@ -165,7 +165,7 @@ export function Pricing({ className }: PricingProps) {
 
         {/* Accent touch 2 of 3 */}
         <Button
-          href="#start"
+          href="/book"
           trailingArrow
           className="self-start max-md:w-full max-md:justify-center max-md:py-space-4"
         >

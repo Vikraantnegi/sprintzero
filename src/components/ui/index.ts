@@ -25,6 +25,7 @@ export type { NavLink } from "./Nav";
 export { Footer } from "./Footer";
 export { BrandStrip } from "./BrandStrip";
 export { CTABlock } from "./CTABlock";
+export { SchedulerPanel } from "./SchedulerPanel";
 
 export { Input } from "./Input";
 export { Toggle } from "./Toggle";

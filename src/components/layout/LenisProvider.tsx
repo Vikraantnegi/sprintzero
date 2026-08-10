@@ -61,16 +61,24 @@ export function LenisProvider({ children }: LenisProviderProps) {
   useEffect(() => {
     const onClick = (event: MouseEvent) => {
       const el = (event.target as HTMLElement | null)?.closest?.(
-        "a[href^='#']",
+        "a[href^='#'], a[href^='/#']",
       );
       if (!el || !(el instanceof HTMLAnchorElement)) return;
 
-      const href = el.getAttribute("href");
-      if (!href || href.length < 2) return;
-      if (!document.getElementById(href.slice(1))) return;
+      const raw = el.getAttribute("href");
+      if (!raw || raw.length < 2) return;
+
+      // Normalize /#id → #id for scroll when the target exists on this page.
+      const hash = raw.startsWith("/#")
+        ? `#${raw.slice(2)}`
+        : raw.startsWith("#")
+          ? raw
+          : null;
+      if (!hash || hash.length < 2) return;
+      if (!document.getElementById(hash.slice(1))) return;
 
       event.preventDefault();
-      scrollToHash(href, lenisRef.current);
+      scrollToHash(hash, lenisRef.current);
     };
 
     document.addEventListener("click", onClick, true);

@@ -78,7 +78,7 @@ export function Hero({ className }: HeroProps) {
         >
           {/* Accent touch 2 of 3 — primary CTA fill */}
           <Button
-            href="#start"
+            href="/book"
             trailingArrow
             className="max-md:w-full max-md:justify-center max-md:py-space-4"
           >

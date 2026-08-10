@@ -159,7 +159,7 @@ export function WhatWeBuild({ className }: WhatWeBuildProps) {
 
           {/* Accent touch 2 of 2 */}
           <Button
-            href="#start"
+            href="/book"
             trailingArrow
             className="self-start max-md:w-full max-md:justify-center max-md:py-space-4"
           >

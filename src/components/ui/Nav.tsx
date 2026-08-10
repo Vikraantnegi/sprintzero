@@ -30,10 +30,10 @@ type NavProps = {
 };
 
 const DEFAULT_LINKS: NavLink[] = [
-  { href: "#what-we-build", label: "What we build" },
-  { href: "#how-we-work", label: "How we work" },
-  { href: "#the-internal-engine", label: "Pipeline" },
-  { href: "#pricing", label: "Pricing" },
+  { href: "/#what-we-build", label: "What we build" },
+  { href: "/#how-we-work", label: "How we work" },
+  { href: "/#the-internal-engine", label: "Pipeline" },
+  { href: "/#pricing", label: "Pricing" },
 ];
 
 /** Specimen --ease; drawer uses 320ms for a readable slide. */
@@ -44,7 +44,7 @@ const OVERLAY_DUR = 0.24;
 export function Nav({
   links = DEFAULT_LINKS,
   activeHref,
-  ctaHref = "#start",
+  ctaHref = "/book",
   forceScrolled,
   className,
 }: NavProps) {
@@ -141,15 +141,28 @@ export function Nav({
   const isScrolled = forceScrolled ?? scrolled;
 
   const onHashClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (!href.startsWith("#")) {
+    const hash = href.includes("#") ? `#${href.split("#")[1]}` : href;
+    if (!hash.startsWith("#") || hash.length < 2) {
       close();
       return;
     }
 
-    // LenisProvider capture-phase interceptor owns scrollToHash.
-    // Only close the drawer here so we don't double-scroll.
-    event.preventDefault();
+    // Same-page hash (or /#id while already on /): Lenis owns scroll.
+    // Cross-route /#id from /book: let the browser navigate; just close drawer.
+    const onHome = window.location.pathname === "/";
+    const isRootHash = href.startsWith("/#") || href.startsWith("#");
+    if (onHome && isRootHash && document.getElementById(hash.slice(1))) {
+      event.preventDefault();
+      close();
+      return;
+    }
+
     close();
+  };
+
+  const isLinkActive = (href: string) => {
+    if (!activeHref) return false;
+    return href === activeHref || href.endsWith(activeHref);
   };
 
   const overlayMotion = reduced
@@ -216,7 +229,7 @@ export function Nav({
           aria-label="Primary"
         >
           {links.map((link) => {
-            const current = activeHref === link.href;
+            const current = isLinkActive(link.href);
             return (
               <a
                 key={link.href}
@@ -294,7 +307,7 @@ export function Nav({
             <div className="flex flex-1 flex-col gap-space-8 px-[var(--gutter)] pt-[calc(var(--space-9)+var(--space-4))] pb-space-7">
               <nav aria-label="Mobile" className="flex flex-col gap-space-1">
                 {links.map((link) => {
-                  const current = activeHref === link.href;
+                  const current = isLinkActive(link.href);
                   return (
                     <a
                       key={link.href}

@@ -18,7 +18,7 @@ export function CTABlock({
   line2Italic,
   body,
   ctaLabel = "Start a sprint",
-  ctaHref = "#start",
+  ctaHref = "/book",
   className,
 }: CTABlockProps) {
   const reduced = useReducedMotion();

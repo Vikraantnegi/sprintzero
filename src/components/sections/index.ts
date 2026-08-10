@@ -5,3 +5,4 @@ export { TheInternalEngine } from "./TheInternalEngine";
 export { TheStack } from "./TheStack";
 export { RecentBuild } from "./RecentBuild";
 export { Pricing } from "./Pricing";
+export { BookSection } from "./BookSection";

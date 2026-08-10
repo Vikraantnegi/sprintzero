@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Link from "next/link";
 import { cn } from "@/lib/cn";
 import { isLinkProps, type ButtonLikeProps } from "@/lib/polymorphic";
 
@@ -34,6 +35,11 @@ const sizeClass: Record<ButtonSize, string> = {
   default: "text-ui gap-gap-btn px-space-5 py-space-3",
   small: "text-ui-sm gap-space-2 px-space-4 py-space-2",
 };
+
+/** Same-origin app routes — use Next.js Link. Hash + external stay on <a>. */
+function isInternalHref(href: string): boolean {
+  return href.startsWith("/") && !href.startsWith("//");
+}
 
 export function Button({
   variant = "primary",
@@ -79,6 +85,13 @@ export function Button({
 
   if (isLinkProps(props)) {
     const { href, ...rest } = props;
+    if (isInternalHref(href)) {
+      return (
+        <Link href={href} className={classNames} {...rest}>
+          {content}
+        </Link>
+      );
+    }
     return (
       <a href={href} className={classNames} {...rest}>
         {content}
