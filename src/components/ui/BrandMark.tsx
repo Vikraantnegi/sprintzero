@@ -25,7 +25,7 @@ export function BrandMark({
         className,
       )}
     >
-      {/* Amber mark — same glyph as app/icon.svg */}
+      {/* Amber mark — decorative; accessible name is the adjacent "SprintZero." wordmark */}
       <span
         className="size-2 shrink-0 bg-accent max-md:size-[7px]"
         aria-hidden
