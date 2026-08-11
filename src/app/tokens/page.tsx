@@ -6,6 +6,7 @@ import { tokens } from "@/lib/tokens";
 export const metadata: Metadata = {
   title: "Tokens",
   description: "SprintZero design token foundation preview.",
+  robots: { index: false, follow: false },
 };
 
 const colorEntries = Object.entries(tokens.color) as [

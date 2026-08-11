@@ -20,6 +20,7 @@ import { CurrencyDemo } from "./currency-demo";
 export const metadata: Metadata = {
   title: "Components",
   description: "SprintZero Stage 2 component library preview.",
+  robots: { index: false, follow: false },
 };
 
 const colorChips = [
