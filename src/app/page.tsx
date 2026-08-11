@@ -29,32 +29,31 @@ export default function Home() {
               <Hero />
             </Section>
 
-            {/* Content-height sections — own GSAP stagger via .section--stagger */}
-            <Section id="what-we-build" className="section--stagger">
+            <Section id="what-we-build">
               <WhatWeBuild />
             </Section>
 
-            <Section id="how-we-work" className="section--stagger">
+            <Section id="how-we-work">
               <HowWeWork />
             </Section>
 
-            <Section id="the-internal-engine" className="section--stagger">
+            <Section id="the-internal-engine">
               <TheInternalEngine />
             </Section>
 
-            <Section id="the-stack" className="section--stagger">
+            <Section id="the-stack">
               <TheStack />
             </Section>
 
-            <Section id="recent-build" className="section--stagger">
+            <Section id="recent-build">
               <RecentBuild />
             </Section>
 
-            <Section id="questions" className="section--stagger">
+            <Section id="questions">
               <Questions />
             </Section>
 
-            <Section id="pricing" className="section--stagger">
+            <Section id="pricing">
               <Pricing />
             </Section>
 

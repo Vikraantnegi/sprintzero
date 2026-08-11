@@ -6,7 +6,7 @@ import {
   MarketingShell,
   Section,
 } from "@/components/layout";
-import { Footer, SectionLabel } from "@/components/ui";
+import { BulletRow, Footer, SectionLabel } from "@/components/ui";
 import {
   CONTACT_EMAIL,
   OPERATOR_LEGAL_NAME,
@@ -81,11 +81,7 @@ export default function PrivacyPage() {
                     Depending on how you use the site, we may process:
                   </p>
                   <ul className="flex list-none flex-col gap-space-3 p-0">
-                    <li className="grid grid-cols-[16px_1fr] gap-space-2 text-body text-muted">
-                      <span className="font-mono text-faint" aria-hidden>
-                        —
-                      </span>
-                      <span>
+                    <BulletRow>
                         <span className="font-mono text-meta uppercase tracking-[0.08em] text-faint">
                           Booking
                         </span>
@@ -95,13 +91,8 @@ export default function PrivacyPage() {
                         any notes you provide on the booking form). Cal.com
                         controls that booking interface; we receive the booking
                         details needed to run the call.
-                      </span>
-                    </li>
-                    <li className="grid grid-cols-[16px_1fr] gap-space-2 text-body text-muted">
-                      <span className="font-mono text-faint" aria-hidden>
-                        —
-                      </span>
-                      <span>
+                      </BulletRow>
+                    <BulletRow>
                         {/* analytics phrasing matches PostHog init — DNT-gated + identified_only (Phase 3) */}
                         <span className="font-mono text-meta uppercase tracking-[0.08em] text-faint">
                           Analytics
@@ -118,13 +109,8 @@ export default function PrivacyPage() {
                         us (for example by booking a call) — anonymous browsing
                         stays anonymous. We use this to improve the site, not to
                         sell profiles.
-                      </span>
-                    </li>
-                    <li className="grid grid-cols-[16px_1fr] gap-space-2 text-body text-muted">
-                      <span className="font-mono text-faint" aria-hidden>
-                        —
-                      </span>
-                      <span>
+                      </BulletRow>
+                    <BulletRow>
                         <span className="font-mono text-meta uppercase tracking-[0.08em] text-faint">
                           Hosting &amp; CDN
                         </span>
@@ -133,13 +119,8 @@ export default function PrivacyPage() {
                         process standard request data (for example IP address,
                         user agent, and request URL) in server and edge logs as
                         part of delivering the site.
-                      </span>
-                    </li>
-                    <li className="grid grid-cols-[16px_1fr] gap-space-2 text-body text-muted">
-                      <span className="font-mono text-faint" aria-hidden>
-                        —
-                      </span>
-                      <span>
+                      </BulletRow>
+                    <BulletRow>
                         <span className="font-mono text-meta uppercase tracking-[0.08em] text-faint">
                           Email
                         </span>
@@ -148,13 +129,8 @@ export default function PrivacyPage() {
                         or project (confirmations, handoff notes, invoices),
                         those are delivered via Resend. Content is limited to
                         what the message requires.
-                      </span>
-                    </li>
-                    <li className="grid grid-cols-[16px_1fr] gap-space-2 text-body text-muted">
-                      <span className="font-mono text-faint" aria-hidden>
-                        —
-                      </span>
-                      <span>
+                      </BulletRow>
+                    <BulletRow>
                         <span className="font-mono text-meta uppercase tracking-[0.08em] text-faint">
                           Contact
                         </span>
@@ -162,8 +138,7 @@ export default function PrivacyPage() {
                         If you email us directly, we process whatever you
                         include in that message so we can reply.                         We do not run a
                         separate marketing signup form on this site today.
-                      </span>
-                    </li>
+                      </BulletRow>
                   </ul>
                 </section>
 
@@ -191,63 +166,38 @@ export default function PrivacyPage() {
                     We rely on the following processors for the functions above:
                   </p>
                   <ul className="flex list-none flex-col gap-space-3 p-0">
-                    <li className="grid grid-cols-[16px_1fr] gap-space-2 text-body text-muted">
-                      <span className="font-mono text-faint" aria-hidden>
-                        —
-                      </span>
-                      <span>
+                    <BulletRow>
                         <span className="font-mono text-meta uppercase tracking-[0.08em] text-faint">
                           Vercel
                         </span>{" "}
                         — website hosting; processes request logs (IP, request
                         metadata) for every visit
-                      </span>
-                    </li>
-                    <li className="grid grid-cols-[16px_1fr] gap-space-2 text-body text-muted">
-                      <span className="font-mono text-faint" aria-hidden>
-                        —
-                      </span>
-                      <span>
+                      </BulletRow>
+                    <BulletRow>
                         <span className="font-mono text-meta uppercase tracking-[0.08em] text-faint">
                           Cloudflare
                         </span>{" "}
                         — DNS, CDN, and email-address protection; proxies
                         requests to the site
-                      </span>
-                    </li>
-                    <li className="grid grid-cols-[16px_1fr] gap-space-2 text-body text-muted">
-                      <span className="font-mono text-faint" aria-hidden>
-                        —
-                      </span>
-                      <span>
+                      </BulletRow>
+                    <BulletRow>
                         <span className="font-mono text-meta uppercase tracking-[0.08em] text-faint">
                           Cal.com
                         </span>{" "}
                         — scheduling and booking forms
-                      </span>
-                    </li>
-                    <li className="grid grid-cols-[16px_1fr] gap-space-2 text-body text-muted">
-                      <span className="font-mono text-faint" aria-hidden>
-                        —
-                      </span>
-                      <span>
+                      </BulletRow>
+                    <BulletRow>
                         <span className="font-mono text-meta uppercase tracking-[0.08em] text-faint">
                           PostHog Cloud EU
                         </span>{" "}
                         — product analytics (DNT-gated; identified-only)
-                      </span>
-                    </li>
-                    <li className="grid grid-cols-[16px_1fr] gap-space-2 text-body text-muted">
-                      <span className="font-mono text-faint" aria-hidden>
-                        —
-                      </span>
-                      <span>
+                      </BulletRow>
+                    <BulletRow>
                         <span className="font-mono text-meta uppercase tracking-[0.08em] text-faint">
                           Resend
                         </span>{" "}
                         — transactional email delivery
-                      </span>
-                    </li>
+                      </BulletRow>
                   </ul>
                   <p className="text-body text-muted">
                     Each provider processes data under their own terms and

@@ -22,7 +22,7 @@ export function JsonLd() {
     email: CONTACT_EMAIL,
     description: DESCRIPTION,
     serviceType: "Custom software and MVP development",
-    priceRange: "₹1,20,000+",
+    priceRange: "$1,500+",
     areaServed: {
       "@type": "City",
       name: "Chandigarh",

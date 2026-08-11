@@ -1,14 +1,9 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import { SectionLabel } from "@/components/ui";
+import { SectionHeading } from "@/components/ui";
+import { useRevealTimeline } from "@/hooks/useRevealTimeline";
 import { cn } from "@/lib/cn";
-import { gsap, registerGsap, useGSAP } from "@/lib/gsap";
-
-registerGsap();
-
-const SZ_EASE = "power3.out";
-const SZ_DUR = 0.32;
 
 /**
  * Real founder objections — honest solo-studio answers.
@@ -69,44 +64,20 @@ export function Questions({ className }: QuestionsProps) {
     return () => mq.removeEventListener("change", apply);
   }, []);
 
-  useGSAP(
-    () => {
-      const root = rootRef.current;
+  useRevealTimeline({
+    scope: rootRef,
+    getTargets: () => {
       const label = labelRef.current;
       const headline = headlineRef.current;
       const list = listRef.current;
-      if (!root || !label || !headline || !list) return;
-
-      const mm = gsap.matchMedia();
-
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap.set([label, headline, list], { opacity: 0, y: 12 });
-
-        gsap
-          .timeline({
-            scrollTrigger: {
-              trigger: root.closest("section") ?? root,
-              start: "top 75%",
-              once: true,
-            },
-          })
-          .to(label, { opacity: 1, y: 0, duration: SZ_DUR, ease: SZ_EASE }, 0)
-          .to(
-            headline,
-            { opacity: 1, y: 0, duration: SZ_DUR, ease: SZ_EASE },
-            0.08,
-          )
-          .to(list, { opacity: 1, y: 0, duration: SZ_DUR, ease: SZ_EASE }, 0.16);
-      });
-
-      mm.add("(prefers-reduced-motion: reduce)", () => {
-        gsap.set([label, headline, list], { opacity: 1, y: 0 });
-      });
-
-      return () => mm.revert();
+      if (!label || !headline || !list) return null;
+      return [
+        { elements: [label] },
+        { elements: [headline] },
+        { elements: [list] },
+      ];
     },
-    { scope: rootRef },
-  );
+  });
 
   return (
     <div
@@ -116,20 +87,16 @@ export function Questions({ className }: QuestionsProps) {
         className,
       )}
     >
-      <div className="flex min-w-0 flex-col gap-space-5">
-        <div ref={labelRef}>
-          <SectionLabel number="06" name="Questions" />
-        </div>
-
-        <h2
-          ref={headlineRef}
-          className="font-display text-display-l font-normal text-text"
-        >
-          <span className="block">Straight answers.</span>
-          {/* Accent touch 1 of 2 */}
-          <span className="block italic text-accent">No fine print.</span>
-        </h2>
-      </div>
+      <SectionHeading
+        number="06"
+        name="Questions"
+        labelRef={labelRef}
+        headlineRef={headlineRef}
+        lines={[
+          { text: "Straight answers." },
+          { text: "No fine print.", accent: true },
+        ]}
+      />
 
       <div ref={listRef} className="min-w-0 border-t border-hairline">
         {FAQ_ITEMS.map((item, index) => {
@@ -146,7 +113,7 @@ export function Questions({ className }: QuestionsProps) {
                   aria-expanded={open}
                   aria-controls={panelId}
                   className={cn(
-                    "flex w-full cursor-pointer items-start justify-between gap-space-4 border-0 bg-transparent py-space-5 text-left font-display text-h3 font-medium transition-colors duration-base ease-sz",
+                    "flex w-full cursor-pointer items-start justify-between gap-space-4 border-0 bg-transparent py-space-5 text-left font-display text-h3 font-medium transition-colors duration-base ease-sz focus-visible:outline-none focus-visible:shadow-focus-accent",
                     open ? "text-accent" : "text-text",
                     "motion-reduce:transition-none",
                     reducedMotion && "cursor-default",

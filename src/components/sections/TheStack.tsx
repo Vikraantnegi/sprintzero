@@ -1,14 +1,9 @@
 "use client";
 
 import { useRef } from "react";
-import { SectionLabel, ToolCard } from "@/components/ui";
+import { SectionHeading, ToolCard } from "@/components/ui";
+import { useRevealTimeline } from "@/hooks/useRevealTimeline";
 import { cn } from "@/lib/cn";
-import { gsap, registerGsap, useGSAP } from "@/lib/gsap";
-
-registerGsap();
-
-const SZ_EASE = "power3.out";
-const SZ_DUR = 0.32;
 
 const TOOLS = [
   { index: "01", name: "Claude", role: "reasoning · code" },
@@ -36,64 +31,24 @@ export function TheStack({ className }: TheStackProps) {
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
 
-  useGSAP(
-    () => {
-      const root = rootRef.current;
+  useRevealTimeline({
+    scope: rootRef,
+    getTargets: () => {
       const label = labelRef.current;
       const headline = headlineRef.current;
       const body = bodyRef.current;
-      const cards = root?.querySelectorAll<HTMLElement>("[data-stack-card]");
-      if (!root || !label || !headline || !body || !cards?.length) return;
-
-      const mm = gsap.matchMedia();
-
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap.set([label, headline, body, ...cards], { opacity: 0, y: 12 });
-
-        gsap
-          .timeline({
-            scrollTrigger: {
-              trigger: root.closest("section") ?? root,
-              start: "top 75%",
-              once: true,
-            },
-          })
-          .to(
-            label,
-            { opacity: 1, y: 0, duration: SZ_DUR, ease: SZ_EASE },
-            0,
-          )
-          .to(
-            headline,
-            { opacity: 1, y: 0, duration: SZ_DUR, ease: SZ_EASE },
-            0.08,
-          )
-          .to(
-            body,
-            { opacity: 1, y: 0, duration: SZ_DUR, ease: SZ_EASE },
-            0.16,
-          )
-          .to(
-            cards,
-            {
-              opacity: 1,
-              y: 0,
-              duration: SZ_DUR,
-              ease: SZ_EASE,
-              stagger: 0.06,
-            },
-            0.24,
-          );
-      });
-
-      mm.add("(prefers-reduced-motion: reduce)", () => {
-        gsap.set([label, headline, body, ...cards], { opacity: 1, y: 0 });
-      });
-
-      return () => mm.revert();
+      const cards = rootRef.current?.querySelectorAll<HTMLElement>(
+        "[data-stack-card]",
+      );
+      if (!label || !headline || !body || !cards?.length) return null;
+      return [
+        { elements: [label] },
+        { elements: [headline] },
+        { elements: [body] },
+        { elements: [...cards], stagger: 0.06 },
+      ];
     },
-    { scope: rootRef },
-  );
+  });
 
   return (
     <div
@@ -103,30 +58,27 @@ export function TheStack({ className }: TheStackProps) {
         className,
       )}
     >
-      <div className="flex min-w-0 flex-col gap-space-5">
-        <div ref={labelRef}>
-          <SectionLabel number="04" name="The stack" />
-        </div>
-
-        <h2
-          ref={headlineRef}
-          className="font-display text-display-l font-normal text-text"
-        >
-          <span className="block">Quiet flex.</span>
-          {/* The only static amber touch */}
-          <span className="block italic text-accent">Loud output.</span>
-        </h2>
-
-        <div ref={bodyRef} className="flex flex-col gap-space-5">
-          <p className="max-w-[360px] text-body text-muted">
-            No tool worship. Each one earns its slot by killing a step in the
-            pipeline.
-          </p>
-          <p className="border-t border-hairline pt-space-4 font-mono text-meta uppercase tracking-[0.08em] text-faint max-md:hidden">
-            Nine tools · one operator
-          </p>
-        </div>
-      </div>
+      <SectionHeading
+        number="04"
+        name="The stack"
+        labelRef={labelRef}
+        headlineRef={headlineRef}
+        lines={[
+          { text: "Quiet flex." },
+          { text: "Loud output.", accent: true },
+        ]}
+        body={
+          <div ref={bodyRef} className="flex flex-col gap-space-5">
+            <p className="max-w-[360px] text-body text-muted">
+              No tool worship. Each one earns its slot by killing a step in the
+              pipeline.
+            </p>
+            <p className="border-t border-hairline pt-space-4 font-mono text-meta uppercase tracking-[0.08em] text-faint max-md:hidden">
+              Nine tools · one operator
+            </p>
+          </div>
+        }
+      />
 
       <div className="grid min-w-0 grid-cols-2 gap-space-3 min-[381px]:grid-cols-2 md:grid-cols-3 md:gap-space-4 max-[380px]:grid-cols-1">
         {TOOLS.map((tool) => (

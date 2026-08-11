@@ -8,16 +8,19 @@ export { ToolCard } from "./ToolCard";
 export { FeatureCard } from "./FeatureCard";
 export { StatCard } from "./StatCard";
 
-export { Timeline } from "./Timeline";
+export { Timeline } from "./timeline";
 export type {
   EngineStage,
   TimelineStage,
   SprintStep,
   TimelineProps,
-} from "./Timeline";
+} from "./timeline";
 
 export { SectionLabel } from "./SectionLabel";
+export { SectionHeading } from "./SectionHeading";
+export type { SectionHeadingLine } from "./SectionHeading";
 export { MonoLabel } from "./MonoLabel";
+export { BulletList, BulletRow } from "./BulletList";
 
 export { Nav } from "./Nav";
 export type { NavLink } from "./Nav";

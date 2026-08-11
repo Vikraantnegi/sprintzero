@@ -1,14 +1,12 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import { BulletList } from "@/components/ui/BulletList";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { SchedulerPanel } from "@/components/ui/SchedulerPanel";
 import { bookingCopy } from "@/lib/booking";
 import { cn } from "@/lib/cn";
-
-/** Specimen load-in: 320ms, ease matches --ease. Not new design tokens. */
-const SZ_EASE = [0.2, 0, 0, 1] as const;
-const SZ_DUR = 0.32;
+import { SZ_DUR, SZ_EASE_FRAMER } from "@/lib/motion/constants";
 
 type BookSectionProps = {
   className?: string;
@@ -28,7 +26,7 @@ export function BookSection({ className }: BookSectionProps) {
       : {
           initial: { opacity: 0, y: 12 },
           animate: { opacity: 1, y: 0 },
-          transition: { duration: SZ_DUR, ease: SZ_EASE, delay },
+          transition: { duration: SZ_DUR, ease: SZ_EASE_FRAMER, delay },
         };
 
   const fadeIn = (delay: number) =>
@@ -37,15 +35,12 @@ export function BookSection({ className }: BookSectionProps) {
       : {
           initial: { opacity: 0 },
           animate: { opacity: 1 },
-          transition: { duration: SZ_DUR, ease: SZ_EASE, delay },
+          transition: { duration: SZ_DUR, ease: SZ_EASE_FRAMER, delay },
         };
 
   return (
     <div
-      className={cn(
-        "flex w-full min-w-0 flex-col gap-space-8",
-        className,
-      )}
+      className={cn("flex w-full min-w-0 flex-col gap-space-8", className)}
     >
       <div className="flex w-full min-w-0 flex-col items-center gap-space-5 text-center">
         <motion.div {...up(0)}>
@@ -57,35 +52,19 @@ export function BookSection({ className }: BookSectionProps) {
 
         <h1 className="font-display text-display-l font-normal text-text">
           <motion.span className="block" {...up(0.07)}>
-            {bookingCopy.headlineLine1} <span className="text-accent">{bookingCopy.headlineLine2}</span>
+            {bookingCopy.headlineLine1}{" "}
+            <span className="text-accent">{bookingCopy.headlineLine2}</span>
           </motion.span>
         </h1>
 
-        <motion.p
-          className="max-w-210 text-body text-muted"
-          {...up(0.22)}
-        >
+        <motion.p className="max-w-210 text-body text-muted" {...up(0.22)}>
           {bookingCopy.body}
         </motion.p>
 
-        <motion.ul
-          className="mx-auto flex w-full max-w-140 list-none flex-col gap-space-3 p-0 text-left"
-          {...up(0.3)}
-        >
-          {bookingCopy.covers.map((item) => (
-            <li
-              key={item}
-              className="grid grid-cols-[16px_1fr] gap-space-2 text-body text-muted max-md:grid-cols-[14px_1fr]"
-            >
-              <span className="font-mono text-faint" aria-hidden>
-                —
-              </span>
-              <span>{item}</span>
-            </li>
-          ))}
-        </motion.ul>
+        <motion.div className="mx-auto w-full max-w-140 text-left" {...up(0.3)}>
+          <BulletList items={bookingCopy.covers} />
+        </motion.div>
 
-        {/* Logistics — 0 amber; next-step hidden on mobile so Cal stays near fold */}
         <motion.div
           className="flex w-full max-w-210 flex-col items-center gap-space-3 border-t border-hairline pt-space-5"
           {...up(0.38)}
@@ -101,7 +80,6 @@ export function BookSection({ className }: BookSectionProps) {
         </motion.div>
       </div>
 
-      {/* Opacity only — never transform an iframe */}
       <motion.div className="min-w-0 w-full" {...fadeIn(0.46)}>
         <SchedulerPanel />
       </motion.div>

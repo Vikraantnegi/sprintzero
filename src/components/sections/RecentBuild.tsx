@@ -1,15 +1,9 @@
 "use client";
 
 import { useRef } from "react";
-import { Button, Card, MonoLabel, SectionLabel } from "@/components/ui";
+import { Button, Card, MonoLabel, SectionHeading } from "@/components/ui";
+import { useRevealTimeline } from "@/hooks/useRevealTimeline";
 import { cn } from "@/lib/cn";
-import { gsap, registerGsap, useGSAP } from "@/lib/gsap";
-
-registerGsap();
-
-/** Closest GSAP stand-in for specimen --ease cubic-bezier(0.2,0,0,1). */
-const SZ_EASE = "power3.out";
-const SZ_DUR = 0.32;
 
 /**
  * Two real builds — honest role labels.
@@ -53,87 +47,39 @@ export function RecentBuild({ className }: RecentBuildProps) {
   const cardsRef = useRef<HTMLDivElement>(null);
   const reservedRef = useRef<HTMLDivElement>(null);
 
-  useGSAP(
-    () => {
-      const root = rootRef.current;
+  useRevealTimeline({
+    scope: rootRef,
+    getTargets: () => {
       const label = labelRef.current;
       const headline = headlineRef.current;
       const cards = cardsRef.current;
       const reserved = reservedRef.current;
-      if (!root || !label || !headline || !cards || !reserved) return;
-
+      if (!label || !headline || !cards || !reserved) return null;
       const cardEls = cards.querySelectorAll<HTMLElement>("[data-build-card]");
-      const mm = gsap.matchMedia();
-
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap.set([label, headline, ...cardEls, reserved], {
-          opacity: 0,
-          y: 12,
-        });
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: root.closest("section") ?? root,
-            start: "top 75%",
-            once: true,
-          },
-        });
-
-        tl.to(label, { opacity: 1, y: 0, duration: SZ_DUR, ease: SZ_EASE }, 0)
-          .to(
-            headline,
-            { opacity: 1, y: 0, duration: SZ_DUR, ease: SZ_EASE },
-            0.08,
-          )
-          .to(
-            cardEls,
-            {
-              opacity: 1,
-              y: 0,
-              duration: SZ_DUR,
-              ease: SZ_EASE,
-              stagger: 0.08,
-            },
-            0.16,
-          )
-          .to(
-            reserved,
-            { opacity: 1, y: 0, duration: SZ_DUR, ease: SZ_EASE },
-            0.32,
-          );
-      });
-
-      mm.add("(prefers-reduced-motion: reduce)", () => {
-        gsap.set([label, headline, ...cardEls, reserved], {
-          opacity: 1,
-          y: 0,
-        });
-      });
-
-      return () => mm.revert();
+      return [
+        { elements: [label] },
+        { elements: [headline] },
+        { elements: [...cardEls], stagger: 0.08 },
+        { elements: [reserved] },
+      ];
     },
-    { scope: rootRef },
-  );
+  });
 
   return (
     <div
       ref={rootRef}
       className={cn("flex w-full min-w-0 flex-col gap-space-7", className)}
     >
-      <div className="flex min-w-0 flex-col gap-space-5">
-        <div ref={labelRef}>
-          <SectionLabel number="05" name="Recent builds" />
-        </div>
-
-        <h2
-          ref={headlineRef}
-          className="font-display text-display-l font-normal text-text"
-        >
-          <span className="block">Recent builds.</span>
-          {/* Accent touch 1 */}
-          <span className="block italic text-accent">Real receipts.</span>
-        </h2>
-      </div>
+      <SectionHeading
+        number="05"
+        name="Recent builds"
+        labelRef={labelRef}
+        headlineRef={headlineRef}
+        lines={[
+          { text: "Ship log." },
+          { text: "Real receipts.", accent: true },
+        ]}
+      />
 
       <div
         ref={cardsRef}
@@ -145,12 +91,6 @@ export function RecentBuild({ className }: RecentBuildProps) {
               magnetic
               className="flex h-full !rounded-lg flex-col gap-space-5 !p-space-6 max-md:!p-space-5"
             >
-              {/*
-                Screenshot stand-in — decorative until a real asset lands.
-                Keep aria-hidden (do not invent dashboard alt for a filename label).
-                When swapping to next/image: alt must describe the real product view
-                e.g. "Propel — AI marketing CRM dashboard" / "Murmur — studio engine app".
-              */}
               <div
                 className="card-texture flex aspect-[16/10] min-w-0 items-end justify-start rounded-md border border-hairline bg-surface-2 p-space-4"
                 aria-hidden
@@ -169,7 +109,6 @@ export function RecentBuild({ className }: RecentBuildProps) {
 
                 <p className="text-body text-muted">{build.body}</p>
 
-                {/* Accent touches 2–3 — amber live links only */}
                 <Button
                   variant="text"
                   href={build.linkHref}
@@ -188,7 +127,6 @@ export function RecentBuild({ className }: RecentBuildProps) {
         ))}
       </div>
 
-      {/* reserved until a real, approved client quote exists — 0 amber */}
       <div
         ref={reservedRef}
         className="flex flex-col gap-space-4 rounded-lg border border-dashed border-hairline p-space-6 max-md:p-space-5"

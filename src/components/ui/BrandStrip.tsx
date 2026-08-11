@@ -80,12 +80,15 @@ export function BrandStrip({ className }: BrandStripProps) {
   return (
     <div
       ref={rootRef}
-      className={cn("brand-strip group relative", className)}
+      className={cn(
+        "relative w-full overflow-hidden border-y border-hairline bg-bg py-space-4 group",
+        className,
+      )}
       role="presentation"
       aria-hidden
     >
       <div
-        className="brand-strip__track"
+        className="flex w-max will-change-transform animate-marquee group-hover:[animation-play-state:paused] motion-reduce:animate-none"
         style={{ animationDuration: `calc(var(--dur-marquee) * ${copies})` }}
       >
         <Half copies={copies} />

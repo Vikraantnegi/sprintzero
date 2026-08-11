@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/cn";
+import { SZ_EASE_FRAMER } from "@/lib/motion/constants";
 import { Button } from "./Button";
 
 type CTABlockProps = {
@@ -32,7 +33,7 @@ export function CTABlock({
       initial={reduced ? false : { opacity: 0, y: 12 }}
       whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.4 }}
-      transition={{ duration: 0.2, ease: [0.2, 0, 0, 1] }}
+      transition={{ duration: 0.2, ease: SZ_EASE_FRAMER }}
     >
       <div
         className="hero-glow pointer-events-none absolute bottom-[-200px] left-1/2 h-[400px] w-[700px] -translate-x-1/2"

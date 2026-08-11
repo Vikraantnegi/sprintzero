@@ -2,14 +2,8 @@
 
 import { useRef } from "react";
 import { cn } from "@/lib/cn";
-import { gsap, registerGsap, useGSAP } from "@/lib/gsap";
+import { useRevealTimeline } from "@/hooks/useRevealTimeline";
 import { MonoLabel } from "./MonoLabel";
-
-registerGsap();
-
-/** Closest GSAP stand-in for specimen --ease cubic-bezier(0.2,0,0,1). */
-const SZ_EASE = "power3.out";
-const SZ_DUR = 0.32;
 
 /** Match real Section ids from page assembly — /# so links work off-home. */
 const STUDIO_LINKS = [
@@ -26,7 +20,7 @@ const CHANNELS = [
 ] as const;
 
 const linkClass =
-  "text-body text-muted no-underline transition-colors duration-fast ease-sz hover:text-accent-hover motion-reduce:transition-none";
+  "text-body text-muted no-underline transition-colors duration-fast ease-sz hover:text-accent-hover motion-reduce:transition-none focus-visible:outline-none focus-visible:shadow-focus-accent";
 
 type FooterProps = {
   className?: string;
@@ -41,38 +35,15 @@ export function Footer({ className }: FooterProps) {
   const rootRef = useRef<HTMLElement>(null);
   const columnsRef = useRef<HTMLDivElement>(null);
 
-  useGSAP(
-    () => {
-      const root = rootRef.current;
+  useRevealTimeline({
+    scope: rootRef,
+    start: "top 90%",
+    getTargets: () => {
       const columns = columnsRef.current;
-      if (!root || !columns) return;
-
-      const mm = gsap.matchMedia();
-
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap.set(columns, { opacity: 0, y: 12 });
-
-        gsap.to(columns, {
-          opacity: 1,
-          y: 0,
-          duration: SZ_DUR,
-          ease: SZ_EASE,
-          scrollTrigger: {
-            trigger: root.closest("section") ?? root,
-            start: "top 90%",
-            once: true,
-          },
-        });
-      });
-
-      mm.add("(prefers-reduced-motion: reduce)", () => {
-        gsap.set(columns, { opacity: 1, y: 0 });
-      });
-
-      return () => mm.revert();
+      if (!columns) return null;
+      return [{ elements: [columns] }];
     },
-    { scope: rootRef },
-  );
+  });
 
   return (
     <footer

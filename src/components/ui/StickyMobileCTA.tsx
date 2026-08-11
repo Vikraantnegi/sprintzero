@@ -6,9 +6,9 @@ import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { capture } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
+import { SZ_EASE_FRAMER } from "@/lib/motion/constants";
 
-/** Specimen --ease; 200ms = tokens durBase / duration-base. */
-const SZ_EASE = [0.2, 0, 0, 1] as const;
+/** 200ms = tokens durBase / duration-base. */
 const FADE_DUR = 0.2;
 
 /**
@@ -72,7 +72,7 @@ export function StickyMobileCTA({ className }: { className?: string }) {
             transition={
               reduced
                 ? { duration: 0 }
-                : { duration: FADE_DUR, ease: SZ_EASE }
+                : { duration: FADE_DUR, ease: SZ_EASE_FRAMER }
             }
           >
             <Button
@@ -83,7 +83,7 @@ export function StickyMobileCTA({ className }: { className?: string }) {
                 capture("cta_clicked", { location: "sticky_mobile" })
               }
             >
-              Start a sprint
+              Start a sprint · from $1,500
             </Button>
           </motion.div>
         ) : null}

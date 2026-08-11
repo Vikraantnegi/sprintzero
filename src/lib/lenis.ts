@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Lenis from "lenis";
 import { gsap, registerGsap, ScrollTrigger } from "@/lib/gsap";
 
@@ -18,17 +18,28 @@ function prefersReducedMotion(): boolean {
 
 /**
  * Smooth-scroll via Lenis. Skips init when `enabled` is false or
- * `prefers-reduced-motion: reduce`.
+ * `prefers-reduced-motion: reduce`. Reacts to preference changes at runtime.
  *
  * Shared clock: Lenis RAF is driven by gsap.ticker (autoRaf off) and
  * ScrollTrigger.update runs on Lenis scroll — one loop, no dual RAF fight.
  */
 export function useLenis({ enabled = false }: UseLenisOptions = {}) {
   const lenisRef = useRef<Lenis | null>(null);
+  const [motionOk, setMotionOk] = useState(() => !prefersReducedMotion());
 
   useEffect(() => {
-    if (!enabled || typeof window === "undefined") return;
-    if (prefersReducedMotion()) return;
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const apply = () => setMotionOk(!mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+
+  useEffect(() => {
+    if (!enabled || typeof window === "undefined" || !motionOk) {
+      return;
+    }
 
     const lenis = new Lenis({
       // Higher lerp = less sticky lag on content-height sections.
@@ -59,7 +70,7 @@ export function useLenis({ enabled = false }: UseLenisOptions = {}) {
       lenis.destroy();
       lenisRef.current = null;
     };
-  }, [enabled]);
+  }, [enabled, motionOk]);
 
   return lenisRef;
 }

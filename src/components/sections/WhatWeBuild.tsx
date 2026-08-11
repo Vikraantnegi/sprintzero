@@ -1,20 +1,14 @@
 "use client";
 
 import { useRef } from "react";
-import { Button, Card, MonoLabel, SectionLabel } from "@/components/ui";
+import { Button, Card, MonoLabel, SectionHeading } from "@/components/ui";
+import { useRevealTimeline } from "@/hooks/useRevealTimeline";
 import { capture } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
-import { gsap, registerGsap, useGSAP } from "@/lib/gsap";
-
-registerGsap();
-
-/** Closest GSAP stand-in for specimen --ease cubic-bezier(0.2,0,0,1). */
-const SZ_EASE = "power3.out";
-const SZ_DUR = 0.32;
 
 const STATS = [
   { label: "Cycle", value: "72h" },
-  { label: "Floor", value: "₹1,20,000" },
+  { label: "Floor", value: "$1,500" },
   { label: "Format", value: "fixed-scope" },
 ] as const;
 
@@ -32,48 +26,20 @@ export function WhatWeBuild({ className }: WhatWeBuildProps) {
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
-  useGSAP(
-    () => {
-      const root = rootRef.current;
+  useRevealTimeline({
+    scope: rootRef,
+    getTargets: () => {
       const label = labelRef.current;
       const headline = headlineRef.current;
       const card = cardRef.current;
-      if (!root || !label || !headline || !card) return;
-
-      const mm = gsap.matchMedia();
-
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap.set([label, headline, card], { opacity: 0, y: 12 });
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: root.closest("section") ?? root,
-            start: "top 75%",
-            once: true,
-          },
-        });
-
-        tl.to(label, { opacity: 1, y: 0, duration: SZ_DUR, ease: SZ_EASE }, 0)
-          .to(
-            headline,
-            { opacity: 1, y: 0, duration: SZ_DUR, ease: SZ_EASE },
-            0.08,
-          )
-          .to(
-            card,
-            { opacity: 1, y: 0, duration: SZ_DUR, ease: SZ_EASE },
-            0.16,
-          );
-      });
-
-      mm.add("(prefers-reduced-motion: reduce)", () => {
-        gsap.set([label, headline, card], { opacity: 1, y: 0 });
-      });
-
-      return () => mm.revert();
+      if (!label || !headline || !card) return null;
+      return [
+        { elements: [label] },
+        { elements: [headline] },
+        { elements: [card] },
+      ];
     },
-    { scope: rootRef },
-  );
+  });
 
   return (
     <div
@@ -83,25 +49,27 @@ export function WhatWeBuild({ className }: WhatWeBuildProps) {
         className,
       )}
     >
-      <div className="flex min-w-0 flex-col gap-space-5">
-        <div ref={labelRef}>
-          <SectionLabel number="01" name="What we build" />
-        </div>
-
-        <h2
-          ref={headlineRef}
-          className="font-display text-display-l font-normal text-text"
-        >
-          <span className="block">One engine.</span>
-          {/* Accent touch 1 of 2 */}
-          <span className="block italic text-accent">Zero retainers.</span>
-        </h2>
-
-        <p className="max-w-[360px] text-body text-muted max-md:hidden">
-          One thing to buy. Everything below is what it includes — there is no
-          tier above it and no add-on beside it.
-        </p>
-      </div>
+      <SectionHeading
+        number="01"
+        name="What we build"
+        labelRef={labelRef}
+        headlineRef={headlineRef}
+        lines={[
+          { text: "One engine." },
+          { text: "Zero retainers.", accent: true },
+        ]}
+        body={
+          <p className="max-w-[360px] text-body text-muted md:block">
+            <span className="md:hidden">
+              One thing to buy — no tier above it, no add-on beside it.
+            </span>
+            <span className="hidden md:inline">
+              One thing to buy. Everything below is what it includes — there is
+              no tier above it and no add-on beside it.
+            </span>
+          </p>
+        }
+      />
 
       <div ref={cardRef} className="min-w-0">
         <Card
@@ -121,7 +89,6 @@ export function WhatWeBuild({ className }: WhatWeBuildProps) {
             </p>
           </div>
 
-          {/* Desktop: 3-col stacks */}
           <div className="hidden flex-wrap gap-x-space-7 gap-y-space-5 border-t border-hairline pt-space-6 md:flex">
             {STATS.map((stat) => (
               <div
@@ -138,7 +105,6 @@ export function WhatWeBuild({ className }: WhatWeBuildProps) {
             ))}
           </div>
 
-          {/* Mobile: label / value rows */}
           <div className="flex flex-col border-t border-hairline pt-space-4 md:hidden">
             {STATS.map((stat, i) => (
               <div
@@ -158,7 +124,6 @@ export function WhatWeBuild({ className }: WhatWeBuildProps) {
             ))}
           </div>
 
-          {/* Accent touch 2 of 2 */}
           <Button
             href="/book"
             trailingArrow

@@ -34,13 +34,21 @@ export function Section({
     <section
       id={id}
       className={cn(
-        "section",
-        terminal && "section--terminal",
-        hero && "section--hero",
+        "w-full max-w-full overflow-x-clip px-[var(--gutter)] py-space-9 max-md:py-space-8",
+        terminal && "min-h-0",
+        hero &&
+          "flex min-h-svh flex-col items-stretch justify-start px-0 pb-0 pt-[calc(var(--space-9)+var(--space-8))] max-md:pt-[calc(var(--space-8)+var(--space-8))]",
         className,
       )}
     >
-      <div className={cn("section__inner", innerClassName)}>
+      <div
+        className={cn(
+          "mx-auto w-full min-w-0 max-w-[var(--content-max)]",
+          hero &&
+            "grid w-full flex-1 place-items-center px-[var(--gutter)] pb-space-6",
+          innerClassName,
+        )}
+      >
         {showLabel ? (
           <div className="mb-space-5">
             <SectionLabel
@@ -52,7 +60,9 @@ export function Section({
         ) : null}
         {children}
       </div>
-      {bleed ? <div className="section__bleed">{bleed}</div> : null}
+      {bleed ? (
+        <div className={cn("w-full shrink-0", hero && "mt-auto")}>{bleed}</div>
+      ) : null}
     </section>
   );
 }
