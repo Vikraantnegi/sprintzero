@@ -4,5 +4,6 @@ export { HowWeWork } from "./HowWeWork";
 export { TheInternalEngine } from "./TheInternalEngine";
 export { TheStack } from "./TheStack";
 export { RecentBuild } from "./RecentBuild";
+export { Questions } from "./Questions";
 export { Pricing } from "./Pricing";
 export { BookSection } from "./BookSection";

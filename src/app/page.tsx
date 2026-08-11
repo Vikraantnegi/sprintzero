@@ -8,6 +8,7 @@ import {
   Hero,
   HowWeWork,
   Pricing,
+  Questions,
   RecentBuild,
   TheInternalEngine,
   TheStack,
@@ -47,6 +48,10 @@ export default function Home() {
 
             <Section id="recent-build" className="section--stagger">
               <RecentBuild />
+            </Section>
+
+            <Section id="questions" className="section--stagger">
+              <Questions />
             </Section>
 
             <Section id="pricing" className="section--stagger">

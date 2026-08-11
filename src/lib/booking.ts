@@ -9,7 +9,7 @@ export const CAL_LINK = "sprintzero/discovery";
 export const CAL_URL = `https://cal.com/${CAL_LINK}`;
 
 export const bookingCopy = {
-  sectionNumber: "07",
+  sectionNumber: "08",
   sectionName: "BOOK A SPRINT",
   headlineLine1: "Book the call.",
   headlineLine2: "Start the clock.",

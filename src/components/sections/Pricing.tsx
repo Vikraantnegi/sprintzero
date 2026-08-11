@@ -102,7 +102,7 @@ export function Pricing({ className }: PricingProps) {
     >
       <div className="flex min-w-0 flex-col gap-space-5">
         <div ref={labelRef}>
-          <SectionLabel number="06" name="Pricing & engagement" />
+          <SectionLabel number="07" name="Pricing & engagement" />
         </div>
 
         <h2
