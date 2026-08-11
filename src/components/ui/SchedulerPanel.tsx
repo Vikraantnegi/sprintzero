@@ -121,11 +121,11 @@ export function SchedulerPanel({ className }: SchedulerPanelProps) {
         className,
       )}
     >
-      <span className="font-mono text-meta uppercase tracking-[0.1em] text-faint">
+      <span className="font-mono text-meta uppercase tracking-widest text-faint">
         Scheduler · Cal.com
       </span>
 
-      <div className="min-h-[520px] w-full min-w-0 overflow-visible max-md:min-h-[480px]">
+      <div className="min-h-130 w-full min-w-0 overflow-visible max-md:min-h-120">
         <Cal
           namespace={CAL_NAMESPACE}
           calLink={CAL_LINK}
@@ -137,7 +137,7 @@ export function SchedulerPanel({ className }: SchedulerPanelProps) {
         />
       </div>
 
-      <p className="font-mono text-meta text-faint">
+      <p className="font-mono text-meta text-faint text-center">
         Calendar not loading?{" "}
         <Button
           variant="text"

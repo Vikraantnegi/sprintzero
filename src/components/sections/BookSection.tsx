@@ -15,8 +15,9 @@ type BookSectionProps = {
 };
 
 /**
- * 07 — Book a sprint. Mount stagger (landing route), not ScrollTrigger.
+ * 08 — Book a sprint. Mount stagger (landing route), not ScrollTrigger.
  * Accent budget (2): italic headline line 2 + Cal embed / fallback link.
+ * Stacked layout — framing on top, full-width scheduler below so Cal has room.
  */
 export function BookSection({ className }: BookSectionProps) {
   const reduced = useReducedMotion();
@@ -42,11 +43,11 @@ export function BookSection({ className }: BookSectionProps) {
   return (
     <div
       className={cn(
-        "grid w-full min-w-0 items-start gap-space-8 md:grid-cols-[0.85fr_1.15fr] md:items-center",
+        "flex w-full min-w-0 flex-col gap-space-8",
         className,
       )}
     >
-      <div className="flex min-w-0 flex-col gap-space-6">
+      <div className="flex w-full min-w-0 flex-col items-center gap-space-5 text-center">
         <motion.div {...up(0)}>
           <SectionLabel
             number={bookingCopy.sectionNumber}
@@ -56,23 +57,19 @@ export function BookSection({ className }: BookSectionProps) {
 
         <h1 className="font-display text-display-l font-normal text-text">
           <motion.span className="block" {...up(0.07)}>
-            {bookingCopy.headlineLine1}
-          </motion.span>
-          {/* Accent touch 1 of 2 */}
-          <motion.span className="block italic text-accent" {...up(0.14)}>
-            {bookingCopy.headlineLine2}
+            {bookingCopy.headlineLine1} <span className="text-accent">{bookingCopy.headlineLine2}</span>
           </motion.span>
         </h1>
 
         <motion.p
-          className="max-w-[440px] text-body text-muted"
+          className="max-w-210 text-body text-muted"
           {...up(0.22)}
         >
           {bookingCopy.body}
         </motion.p>
 
         <motion.ul
-          className="flex list-none flex-col gap-space-3 p-0"
+          className="mx-auto flex w-full max-w-140 list-none flex-col gap-space-3 p-0 text-left"
           {...up(0.3)}
         >
           {bookingCopy.covers.map((item) => (
@@ -87,10 +84,25 @@ export function BookSection({ className }: BookSectionProps) {
             </li>
           ))}
         </motion.ul>
+
+        {/* Logistics — 0 amber; next-step hidden on mobile so Cal stays near fold */}
+        <motion.div
+          className="flex w-full max-w-210 flex-col items-center gap-space-3 border-t border-hairline pt-space-5"
+          {...up(0.38)}
+        >
+          {bookingCopy.metaLines.map((line) => (
+            <p key={line} className="font-mono text-meta text-faint">
+              {line}
+            </p>
+          ))}
+          <p className="hidden text-body text-muted md:block">
+            {bookingCopy.whatHappensNext}
+          </p>
+        </motion.div>
       </div>
 
       {/* Opacity only — never transform an iframe */}
-      <motion.div className="min-w-0" {...fadeIn(0.4)}>
+      <motion.div className="min-w-0 w-full" {...fadeIn(0.46)}>
         <SchedulerPanel />
       </motion.div>
     </div>

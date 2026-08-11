@@ -13,11 +13,15 @@ export const bookingCopy = {
   sectionName: "BOOK A SPRINT",
   headlineLine1: "Book the call.",
   headlineLine2: "Start the clock.",
-  body: "A 30-minute discovery call. You bring the idea; we scope the sprint and confirm the 72-hour window. No pressure, no obligation — if it's not a fit, you'll know on the call.",
+  body: "A 30-minute discovery call. You bring the idea; we scope the sprint and confirm the 72-hour window. No pressure, no obligation: if it's not a fit, you'll know on the call.",
   covers: [
     "What you want shipped, and whether 72 hours is realistic for it",
     "The fixed scope and the ₹1,20,000 floor",
-    "How handoff works — repo, keys, brand kit",
+    "How handoff works: repo, keys, brand kit",
     "When the next sprint window opens",
   ],
+  /** Quiet logistics — real facts, not filler. Soft confirm (no hard SLA). */
+  metaLines: ["30 min · Google Meet · We confirm by email"],
+  whatHappensNext:
+    "You book → you get a Meet link → we scope the sprint on the call.",
 } as const;

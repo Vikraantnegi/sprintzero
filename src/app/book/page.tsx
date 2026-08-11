@@ -23,7 +23,7 @@ export default function BookPage() {
           <main>
             <Section
               id="book"
-              className="flex min-h-svh flex-col justify-center !pt-[calc(var(--space-9)+var(--space-8))]"
+              className="flex min-h-svh flex-col justify-start !pt-[calc(var(--space-9)+var(--space-8))]"
             >
               <BookSection />
             </Section>
