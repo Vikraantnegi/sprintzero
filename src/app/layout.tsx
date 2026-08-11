@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 import { fontBody, fontDisplay, fontMono } from "./fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "SprintZero Studios",
-    template: "%s · SprintZero Studios",
+    default: SITE_NAME,
+    template: `%s · ${SITE_NAME}`,
   },
-  description: "MVPs shipped in 72 hours.",
+  description:
+    "A 72-hour software studio. You bring the idea; one operator hands back a deployed, working MVP.",
 };
 
 export default function RootLayout({

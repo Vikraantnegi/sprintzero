@@ -23,6 +23,7 @@ export { Nav } from "./Nav";
 export type { NavLink } from "./Nav";
 
 export { Footer } from "./Footer";
+export { BrandMark } from "./BrandMark";
 export { BrandStrip } from "./BrandStrip";
 export { CTABlock } from "./CTABlock";
 export { SchedulerPanel } from "./SchedulerPanel";

@@ -14,7 +14,7 @@ import { cn } from "@/lib/cn";
 import { tokens } from "@/lib/tokens";
 import { useLenisRef } from "@/components/layout/LenisProvider";
 import { Button } from "./Button";
-import { MonoLabel } from "./MonoLabel";
+import { BrandMark } from "./BrandMark";
 
 export type NavLink = {
   href: string;
@@ -201,27 +201,18 @@ export function Nav({
       >
         <Link
           href="/"
-          className="flex min-w-0 shrink items-baseline gap-gap-btn no-underline"
+          className="flex min-w-0 shrink items-center no-underline"
           onClick={close}
         >
-          <span
-            className={cn(
-              "truncate font-display text-text transition-[font-size] duration-base ease-sz",
+          <BrandMark
+            showStudio={!isScrolled && !open}
+            wordmarkClassName={cn(
+              "transition-[font-size] duration-base ease-sz",
               // Specimen mobile: wordmark 18px; desktop top: 20px → scrolled 18px.
               isScrolled || open ? "text-wordmark-sm" : "text-wordmark",
               "max-md:text-wordmark-sm",
             )}
-          >
-            SprintZero.
-          </span>
-          {!isScrolled && !open ? (
-            <MonoLabel
-              size="caption"
-              className="hidden tracking-[0.1em] md:inline"
-            >
-              /STUDIO
-            </MonoLabel>
-          ) : null}
+          />
         </Link>
 
         <nav

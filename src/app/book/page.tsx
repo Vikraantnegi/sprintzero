@@ -11,7 +11,7 @@ import { Footer } from "@/components/ui";
 export const metadata: Metadata = {
   title: "Book a discovery call",
   description:
-    "A 30-minute discovery call to scope your sprint and confirm the 72-hour window.",
+    "Book a 30-minute discovery call. Scope your sprint and confirm the 72-hour window.",
 };
 
 export default function BookPage() {

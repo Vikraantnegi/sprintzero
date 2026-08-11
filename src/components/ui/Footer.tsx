@@ -11,12 +11,12 @@ registerGsap();
 const SZ_EASE = "power3.out";
 const SZ_DUR = 0.32;
 
-/** Match real Section ids from page assembly. */
+/** Match real Section ids from page assembly — /# so links work off-home. */
 const STUDIO_LINKS = [
-  { href: "#what-we-build", label: "What we build" },
-  { href: "#how-we-work", label: "How we work" },
-  { href: "#the-internal-engine", label: "Pipeline" },
-  { href: "#pricing", label: "Pricing" },
+  { href: "/#what-we-build", label: "What we build" },
+  { href: "/#how-we-work", label: "How we work" },
+  { href: "/#the-internal-engine", label: "Pipeline" },
+  { href: "/#pricing", label: "Pricing" },
 ] as const;
 
 const CHANNELS = [
@@ -182,6 +182,15 @@ export function Footer({ className }: FooterProps) {
           <p className="font-mono text-mono-label normal-case text-faint whitespace-nowrap max-md:border-t max-md:border-divider max-md:pt-space-3 max-md:text-small">
             Chandigarh, IN
           </p>
+          <a
+            href="/privacy"
+            className={cn(
+              linkClass,
+              "font-mono text-mono-label normal-case text-faint max-md:border-t max-md:border-divider max-md:py-space-3 max-md:text-small",
+            )}
+          >
+            Privacy Policy
+          </a>
         </div>
       </div>
     </footer>
