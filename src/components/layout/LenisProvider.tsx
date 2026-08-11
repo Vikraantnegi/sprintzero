@@ -85,6 +85,30 @@ export function LenisProvider({ children }: LenisProviderProps) {
     return () => document.removeEventListener("click", onClick, true);
   }, [lenisRef]);
 
+  // Cross-route /#section → / with hash: Lenis mounts after navigation.
+  // Scroll once the home sections exist so we don't hard-jump.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.location.pathname !== "/") return;
+
+    const hash = window.location.hash;
+    if (!hash || hash.length < 2) return;
+    if (!document.getElementById(hash.slice(1))) return;
+
+    let cancelled = false;
+    const id = window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        if (cancelled) return;
+        scrollToHash(hash, lenisRef.current);
+      });
+    });
+
+    return () => {
+      cancelled = true;
+      window.cancelAnimationFrame(id);
+    };
+  }, [lenisRef]);
+
   return (
     <LenisContext.Provider value={lenisRef}>{children}</LenisContext.Provider>
   );

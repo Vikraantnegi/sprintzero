@@ -27,6 +27,7 @@ export { BrandMark } from "./BrandMark";
 export { BrandStrip } from "./BrandStrip";
 export { CTABlock } from "./CTABlock";
 export { SchedulerPanel } from "./SchedulerPanel";
+export { StickyMobileCTA } from "./StickyMobileCTA";
 
 export { Input } from "./Input";
 export { Toggle } from "./Toggle";
