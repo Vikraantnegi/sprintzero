@@ -12,6 +12,7 @@ import {
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/cn";
 import { tokens } from "@/lib/tokens";
+import { capture } from "@/lib/analytics";
 import { useLenisRef } from "@/components/layout/LenisProvider";
 import { Button } from "./Button";
 import { BrandMark } from "./BrandMark";
@@ -239,7 +240,12 @@ export function Nav({
         </nav>
 
         <div className="hidden shrink-0 md:block">
-          <Button href={ctaHref} size="small" trailingArrow>
+          <Button
+            href={ctaHref}
+            size="small"
+            trailingArrow
+            onClick={() => capture("cta_clicked", { location: "nav" })}
+          >
             Start a sprint
           </Button>
         </div>
@@ -327,7 +333,10 @@ export function Nav({
                   href={ctaHref}
                   trailingArrow
                   className="w-full justify-center"
-                  onClick={(e) => onHashClick(e, ctaHref)}
+                  onClick={(e) => {
+                    capture("cta_clicked", { location: "nav" });
+                    onHashClick(e, ctaHref);
+                  }}
                 >
                   Start a sprint
                 </Button>

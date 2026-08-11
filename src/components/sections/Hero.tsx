@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { HeroGlow } from "@/components/foundation";
 import { Button, SectionLabel, StatCard } from "@/components/ui";
+import { capture } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
 
 /** Specimen load-in: 320ms, ease matches --ease. Not new design tokens. */
@@ -81,6 +82,7 @@ export function Hero({ className }: HeroProps) {
             href="/book"
             trailingArrow
             className="max-md:w-full max-md:justify-center max-md:py-space-4"
+            onClick={() => capture("cta_clicked", { location: "hero" })}
           >
             Start a sprint
           </Button>

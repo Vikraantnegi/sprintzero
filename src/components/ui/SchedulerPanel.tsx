@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Cal, { getCalApi } from "@calcom/embed-react";
 import { Button } from "@/components/ui/Button";
 import { CAL_LINK, CAL_URL } from "@/lib/booking";
+import { capture, identify } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
 import { tokens } from "@/lib/tokens";
 
@@ -19,8 +20,13 @@ const CAL_NAMESPACE = "book";
  */
 export function SchedulerPanel({ className }: SchedulerPanelProps) {
   useEffect(() => {
+    let cancelled = false;
+    let offBooking: (() => void) | undefined;
+
     (async () => {
       const cal = await getCalApi({ namespace: CAL_NAMESPACE });
+      if (cancelled) return;
+
       cal("ui", {
         theme: "dark",
         hideEventTypeDetails: false,
@@ -64,7 +70,48 @@ export function SchedulerPanel({ className }: SchedulerPanelProps) {
           },
         },
       });
+
+      // Funnel endpoint — real booking only (not /book pageview).
+      // bookingSuccessfulV2 is Cal's current API (bookingSuccessful is deprecated).
+      const onBookingSuccessful = (e: {
+        detail: {
+          data: {
+            uid?: string;
+            startTime?: string;
+            endTime?: string;
+            eventTypeId?: number | null;
+            status?: string;
+          };
+        };
+      }) => {
+        const data = e.detail.data;
+        if (data.uid) identify(data.uid);
+        capture("discovery_call_booked", {
+          booking_uid: data.uid,
+          start_time: data.startTime,
+          end_time: data.endTime,
+          event_type_id: data.eventTypeId ?? undefined,
+          status: data.status,
+        });
+      };
+
+      cal("on", {
+        action: "bookingSuccessfulV2",
+        callback: onBookingSuccessful,
+      });
+
+      offBooking = () => {
+        cal("off", {
+          action: "bookingSuccessfulV2",
+          callback: onBookingSuccessful,
+        });
+      };
     })();
+
+    return () => {
+      cancelled = true;
+      offBooking?.();
+    };
   }, []);
 
   return (

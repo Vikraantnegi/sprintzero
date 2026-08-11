@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { Button, MonoLabel, SectionLabel, Toggle } from "@/components/ui";
+import { capture } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
 import { gsap, registerGsap, useGSAP } from "@/lib/gsap";
 
@@ -130,7 +131,10 @@ export function Pricing({ className }: PricingProps) {
           <Toggle
             options={[...CURRENCY_OPTIONS]}
             value={currency}
-            onChange={setCurrency}
+            onChange={(next) => {
+              setCurrency(next);
+              capture("pricing_currency_toggled", { currency: next });
+            }}
             aria-label="Currency"
           />
         </div>
@@ -168,6 +172,7 @@ export function Pricing({ className }: PricingProps) {
           href="/book"
           trailingArrow
           className="self-start max-md:w-full max-md:justify-center max-md:py-space-4"
+          onClick={() => capture("cta_clicked", { location: "pricing" })}
         >
           Book a discovery call
         </Button>

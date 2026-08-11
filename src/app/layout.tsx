@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PostHogProvider } from "./providers";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import { fontBody, fontDisplay, fontMono } from "./fonts";
 import "./globals.css";
@@ -24,7 +25,7 @@ export default function RootLayout({
       className={`${fontDisplay.variable} ${fontBody.variable} ${fontMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-bg font-body text-text">
-        {children}
+        <PostHogProvider>{children}</PostHogProvider>
       </body>
     </html>
   );

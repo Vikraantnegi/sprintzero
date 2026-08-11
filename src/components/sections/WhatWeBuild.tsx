@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { Button, Card, MonoLabel, SectionLabel } from "@/components/ui";
+import { capture } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
 import { gsap, registerGsap, useGSAP } from "@/lib/gsap";
 
@@ -162,6 +163,9 @@ export function WhatWeBuild({ className }: WhatWeBuildProps) {
             href="/book"
             trailingArrow
             className="self-start max-md:w-full max-md:justify-center max-md:py-space-4"
+            onClick={() =>
+              capture("cta_clicked", { location: "what-we-build" })
+            }
           >
             Book a discovery call
           </Button>
