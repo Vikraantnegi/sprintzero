@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useActiveSection } from "@/hooks/useActiveSection";
 import { Nav } from "@/components/ui/Nav";
 import { StickyMobileCTA } from "@/components/ui/StickyMobileCTA";
@@ -8,7 +9,7 @@ type MarketingShellProps = {
   children: React.ReactNode;
 };
 
-/** Nav section IDs — must match page <Section id> values. */
+/** Nav section IDs — must match homepage <Section id> values. */
 const NAV_SECTION_IDS = [
   "what-we-build",
   "how-we-work",
@@ -18,7 +19,10 @@ const NAV_SECTION_IDS = [
 
 /** Client chrome: scroll-spy Nav + mobile sticky CTA around page sections. */
 export function MarketingShell({ children }: MarketingShellProps) {
-  const activeHref = useActiveSection(NAV_SECTION_IDS);
+  const pathname = usePathname();
+  const scrollActive = useActiveSection(NAV_SECTION_IDS);
+  const activeHref =
+    pathname === "/about" || pathname === "/contact" ? pathname : scrollActive;
 
   return (
     <>

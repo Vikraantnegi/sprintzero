@@ -7,3 +7,5 @@ export { RecentBuild } from "./RecentBuild";
 export { Questions } from "./Questions";
 export { Pricing } from "./Pricing";
 export { BookSection } from "./BookSection";
+export { AboutSection } from "./AboutSection";
+export { ContactSection } from "./ContactSection";

@@ -11,6 +11,8 @@ const STUDIO_LINKS = [
   { href: "/#how-we-work", label: "How we work" },
   { href: "/#the-internal-engine", label: "Pipeline" },
   { href: "/#pricing", label: "Pricing" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
 ] as const;
 
 const CHANNELS = [
