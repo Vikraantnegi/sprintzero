@@ -11,11 +11,12 @@ import {
   CONTACT_EMAIL,
   OPERATOR_LEGAL_NAME,
   OPERATOR_LOCATION,
+  SITE_NAME,
 } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
-  description: "How SprintZero Studio handles your data.",
+  description: `How ${SITE_NAME} handles your data.`,
 };
 
 /** Draft date — bump when counsel finalizes (KAN-78). */

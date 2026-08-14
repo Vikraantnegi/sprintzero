@@ -124,16 +124,25 @@ export function WhatWeBuild({ className }: WhatWeBuildProps) {
             ))}
           </div>
 
-          <Button
-            href="/book"
-            trailingArrow
-            className="self-start max-md:w-full max-md:justify-center max-md:py-space-4"
-            onClick={() =>
-              capture("cta_clicked", { location: "what-we-build" })
-            }
-          >
-            Book a discovery call
-          </Button>
+          <div className="flex flex-col gap-space-4 max-md:w-full">
+            <Button
+              href="/book"
+              trailingArrow
+              className="self-start max-md:w-full max-md:justify-center max-md:py-space-4"
+              onClick={() =>
+                capture("cta_clicked", { location: "what-we-build" })
+              }
+            >
+              Book a discovery call
+            </Button>
+            <Button
+              href="#recent-build"
+              variant="text"
+              className="self-start"
+            >
+              See real builds
+            </Button>
+          </div>
         </Card>
       </div>
     </div>

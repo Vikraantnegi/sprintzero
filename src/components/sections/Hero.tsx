@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { HeroGlow } from "@/components/foundation";
-import { BrandMark, Button, SectionLabel, StatCard } from "@/components/ui";
+import { Button, SectionLabel, StatCard } from "@/components/ui";
 import { capture } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
 import { gsap, registerGsap, useGSAP } from "@/lib/gsap";
@@ -17,6 +17,7 @@ type HeroProps = {
 /**
  * Stage 4 Hero — production copy + GSAP load-in.
  * Accent budget (3): italic 72-hour, primary CTA fill, active nav underline (Nav).
+ * LCP text (headline + body) stays paint-visible; chrome may fade in.
  */
 export function Hero({ className }: HeroProps) {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -34,43 +35,58 @@ export function Hero({ className }: HeroProps) {
       const root = rootRef.current;
       if (!root) return;
 
-      const targets = [
-        brandRef.current,
-        labelRef.current,
+      // LCP candidates (headline + body) stay paint-visible — y-only motion.
+      // Chrome (label, CTAs, proof) may fade; BrandMark optional when remounted.
+      const lcpEls = [
         line1Ref.current,
         line2Ref.current,
         line3Ref.current,
         bodyRef.current,
-        ctasRef.current,
-        proofRef.current,
       ].filter(Boolean) as HTMLElement[];
+      const chromeEls = [
+        brandRef.current,
+        labelRef.current,
+        ctasRef.current,
+      ].filter(Boolean) as HTMLElement[];
+      const proof = proofRef.current;
 
-      if (targets.length !== 8) return;
+      if (lcpEls.length !== 4 || !proof) return;
 
       const mm = gsap.matchMedia();
 
       mm.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap.set(targets.slice(0, 7), { opacity: 0, y: 12 });
-        gsap.set(proofRef.current, { opacity: 0 });
+        gsap.set(lcpEls, { y: 12 });
+        gsap.set(chromeEls, { opacity: 0, y: 12 });
+        gsap.set(proof, { opacity: 0 });
 
         const tl = gsap.timeline();
-        const delays = [0, 0.07, 0.14, 0.21, 0.29, 0.36, 0.43];
-        targets.slice(0, 7).forEach((el, i) => {
+        const lcpDelays = [0.14, 0.21, 0.29, 0.36];
+        lcpEls.forEach((el, i) => {
+          tl.to(
+            el,
+            { y: 0, duration: SZ_DUR, ease: SZ_EASE_GSAP },
+            lcpDelays[i] ?? 0.14 + i * 0.07,
+          );
+        });
+
+        const chromeDelays = [0, 0.07, 0.43];
+        chromeEls.forEach((el, i) => {
           tl.to(
             el,
             { opacity: 1, y: 0, duration: SZ_DUR, ease: SZ_EASE_GSAP },
-            delays[i] ?? i * 0.07,
+            chromeDelays[i] ?? i * 0.07,
           );
         });
+
         tl.to(
-          proofRef.current,
+          proof,
           { opacity: 1, duration: SZ_DUR, ease: SZ_EASE_GSAP },
           0.43,
         );
       });
 
       mm.add("(prefers-reduced-motion: reduce)", () => {
-        gsap.set(targets, { opacity: 1, y: 0 });
+        gsap.set([...lcpEls, ...chromeEls, proof], { opacity: 1, y: 0 });
       });
 
       return () => mm.revert();

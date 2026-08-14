@@ -91,6 +91,11 @@ export function RecentBuild({ className }: RecentBuildProps) {
               magnetic
               className="flex h-full !rounded-lg flex-col gap-space-5 !p-space-6 max-md:!p-space-5"
             >
+              {/*
+                Screenshot slot — CSS stand-in only (no image bytes).
+                When real assets land: next/image + BELOW_FOLD_SCREENSHOT_SIZES
+                from @/lib/image-pattern (lazy below fold; never priority here).
+              */}
               <div
                 className="card-texture flex aspect-[16/10] min-w-0 items-end justify-start rounded-md border border-hairline bg-surface-2 p-space-4"
                 aria-hidden

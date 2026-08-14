@@ -20,12 +20,22 @@ type BookSectionProps = {
 export function BookSection({ className }: BookSectionProps) {
   const reduced = useReducedMotion();
 
+  /** Secondary chrome may fade; LCP framing (headline + body) stays visible. */
   const up = (delay: number) =>
     reduced
       ? {}
       : {
           initial: { opacity: 0, y: 12 },
           animate: { opacity: 1, y: 0 },
+          transition: { duration: SZ_DUR, ease: SZ_EASE_FRAMER, delay },
+        };
+
+  const upLcp = (delay: number) =>
+    reduced
+      ? {}
+      : {
+          initial: { y: 12 },
+          animate: { y: 0 },
           transition: { duration: SZ_DUR, ease: SZ_EASE_FRAMER, delay },
         };
 
@@ -51,13 +61,13 @@ export function BookSection({ className }: BookSectionProps) {
         </motion.div>
 
         <h1 className="font-display text-display-l font-normal text-text">
-          <motion.span className="block" {...up(0.07)}>
+          <motion.span className="block" {...upLcp(0.07)}>
             {bookingCopy.headlineLine1}{" "}
             <span className="text-accent">{bookingCopy.headlineLine2}</span>
           </motion.span>
         </h1>
 
-        <motion.p className="max-w-210 text-body text-muted" {...up(0.22)}>
+        <motion.p className="max-w-210 text-body text-muted" {...upLcp(0.22)}>
           {bookingCopy.body}
         </motion.p>
 

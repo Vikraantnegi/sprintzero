@@ -1,118 +1,59 @@
 "use client";
 
-import { useEffect } from "react";
-import Cal, { getCalApi } from "@calcom/embed-react";
+import dynamic from "next/dynamic";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
-import { CAL_LINK, CAL_URL } from "@/lib/booking";
-import { capture, identify } from "@/lib/analytics";
+import { CAL_URL } from "@/lib/booking";
 import { cn } from "@/lib/cn";
-import { tokens } from "@/lib/tokens";
 
 type SchedulerPanelProps = {
   className?: string;
 };
 
-const CAL_NAMESPACE = "book";
+const CalSchedulerEmbed = dynamic(
+  () =>
+    import("./CalSchedulerEmbed").then((m) => m.CalSchedulerEmbed),
+  { ssr: false },
+);
 
 /**
  * Contained Cal.com tool — framed as a scheduler inside our shell,
  * not disguised as native UI. Accent touch 2: embed brand + fallback link.
+ *
+ * Cal JS loads only when the panel nears the viewport (or on first focus/
+ * pointer interaction) so /book LCP stays on framing copy, not the embed.
  */
 export function SchedulerPanel({ className }: SchedulerPanelProps) {
+  const gateRef = useRef<HTMLDivElement>(null);
+  const [shouldLoad, setShouldLoad] = useState(false);
+
   useEffect(() => {
-    let cancelled = false;
-    let offBooking: (() => void) | undefined;
+    if (shouldLoad) return;
+    const el = gateRef.current;
+    if (!el) return;
 
-    (async () => {
-      const cal = await getCalApi({ namespace: CAL_NAMESPACE });
-      if (cancelled) return;
+    if (typeof IntersectionObserver === "undefined") {
+      setShouldLoad(true);
+      return;
+    }
 
-      cal("ui", {
-        theme: "dark",
-        hideEventTypeDetails: false,
-        styles: {
-          branding: {
-            brandColor: tokens.color.accent,
-          },
-        },
-        cssVarsPerTheme: {
-          light: {
-            "cal-brand": tokens.color.accent,
-            "cal-brand-emphasis": tokens.color.accentHover,
-            "cal-brand-text": tokens.color.bg,
-            "cal-bg": tokens.color.bg,
-            "cal-bg-emphasis": tokens.color.surface1,
-            "cal-bg-subtle": tokens.color.surface2,
-            "cal-bg-muted": tokens.color.bg,
-            "cal-text": tokens.color.text,
-            "cal-text-emphasis": tokens.color.text,
-            "cal-text-subtle": tokens.color.textMuted,
-            "cal-text-muted": tokens.color.textFaint,
-            "cal-border": tokens.color.hairline,
-            "cal-border-booker": "transparent",
-            "cal-border-booker-width": "0px",
-          },
-          dark: {
-            "cal-brand": tokens.color.accent,
-            "cal-brand-emphasis": tokens.color.accentHover,
-            "cal-brand-text": tokens.color.bg,
-            "cal-bg": tokens.color.bg,
-            "cal-bg-emphasis": tokens.color.surface1,
-            "cal-bg-subtle": tokens.color.surface2,
-            "cal-bg-muted": tokens.color.bg,
-            "cal-text": tokens.color.text,
-            "cal-text-emphasis": tokens.color.text,
-            "cal-text-subtle": tokens.color.textMuted,
-            "cal-text-muted": tokens.color.textFaint,
-            "cal-border": tokens.color.hairline,
-            "cal-border-booker": "transparent",
-            "cal-border-booker-width": "0px",
-          },
-        },
-      });
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setShouldLoad(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "200px 0px", threshold: 0 },
+    );
 
-      // Funnel endpoint — real booking only (not /book pageview).
-      // bookingSuccessfulV2 is Cal's current API (bookingSuccessful is deprecated).
-      const onBookingSuccessful = (e: {
-        detail: {
-          data: {
-            uid?: string;
-            startTime?: string;
-            endTime?: string;
-            eventTypeId?: number | null;
-            status?: string;
-          };
-        };
-      }) => {
-        const data = e.detail.data;
-        if (data.uid) identify(data.uid);
-        capture("discovery_call_booked", {
-          booking_uid: data.uid,
-          start_time: data.startTime,
-          end_time: data.endTime,
-          event_type_id: data.eventTypeId ?? undefined,
-          status: data.status,
-        });
-      };
+    io.observe(el);
+    return () => io.disconnect();
+  }, [shouldLoad]);
 
-      cal("on", {
-        action: "bookingSuccessfulV2",
-        callback: onBookingSuccessful,
-      });
-
-      offBooking = () => {
-        cal("off", {
-          action: "bookingSuccessfulV2",
-          callback: onBookingSuccessful,
-        });
-      };
-    })();
-
-    return () => {
-      cancelled = true;
-      offBooking?.();
-    };
-  }, []);
+  const requestLoad = () => {
+    if (!shouldLoad) setShouldLoad(true);
+  };
 
   return (
     <div
@@ -125,16 +66,25 @@ export function SchedulerPanel({ className }: SchedulerPanelProps) {
         Scheduler · Cal.com
       </span>
 
-      <div className="min-h-130 w-full min-w-0 overflow-visible max-md:min-h-120">
-        <Cal
-          namespace={CAL_NAMESPACE}
-          calLink={CAL_LINK}
-          config={{
-            theme: "dark",
-            layout: "month_view",
-          }}
-          style={{ width: "100%", height: "100%", overflow: "scroll" }}
-        />
+      <div
+        ref={gateRef}
+        className="min-h-130 w-full min-w-0 overflow-visible max-md:min-h-120"
+        onPointerEnter={requestLoad}
+        onFocusCapture={requestLoad}
+      >
+        {shouldLoad ? (
+          <CalSchedulerEmbed />
+        ) : (
+          <div
+            className="flex h-full min-h-130 items-center justify-center max-md:min-h-120"
+            aria-busy="true"
+            aria-label="Loading scheduler"
+          >
+            <span className="font-mono text-meta text-faint">
+              Loading calendar…
+            </span>
+          </div>
+        )}
       </div>
 
       <p className="font-mono text-meta text-faint text-center">

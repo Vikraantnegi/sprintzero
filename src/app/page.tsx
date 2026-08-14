@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Grain } from "@/components/foundation";
 import {
   LenisProvider,
@@ -15,6 +16,20 @@ import {
   WhatWeBuild,
 } from "@/components/sections";
 import { BrandStrip, Footer } from "@/components/ui";
+import { SITE_BRAND } from "@/lib/site";
+
+export const metadata: Metadata = {
+  title: {
+    absolute: `${SITE_BRAND} · The 72-hour software studio`,
+  },
+  description:
+    "A 72-hour software studio. You bring the idea; one operator hands back a deployed, working MVP. Fixed scope, transparent pricing, you own everything.",
+  openGraph: {
+    title: `${SITE_BRAND} · The 72-hour software studio`,
+    description:
+      "A 72-hour software studio. You bring the idea; one operator hands back a deployed, working MVP. Fixed scope, transparent pricing, you own everything.",
+  },
+};
 
 export default function Home() {
   return (

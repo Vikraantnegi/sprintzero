@@ -102,6 +102,18 @@ export function Pricing({ className }: PricingProps) {
         >
           Book a discovery call
         </Button>
+
+        <p className="font-mono text-meta text-faint">
+          You own the repo, keys, and brand kit — no lock-in.{" "}
+          <a
+            href="https://github.com/AsumaCodes"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-muted no-underline transition-colors duration-fast ease-sz hover:text-accent-hover focus-visible:outline-none focus-visible:shadow-focus-accent"
+          >
+            @AsumaCodes
+          </a>
+        </p>
       </div>
     </div>
   );

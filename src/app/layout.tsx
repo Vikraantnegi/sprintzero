@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { PostHogProvider } from "./providers";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { SITE_BRAND, SITE_URL } from "@/lib/site";
 import { fontBody, fontDisplay, fontMono } from "./fonts";
 import "./globals.css";
 
@@ -11,19 +11,19 @@ const DESCRIPTION =
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: SITE_NAME,
-    template: `%s · ${SITE_NAME}`,
+    default: SITE_BRAND,
+    template: `%s · ${SITE_BRAND}`,
   },
   description: DESCRIPTION,
   openGraph: {
     type: "website",
-    siteName: SITE_NAME,
-    title: SITE_NAME,
+    siteName: SITE_BRAND,
+    title: SITE_BRAND,
     description: DESCRIPTION,
   },
   twitter: {
     card: "summary_large_image",
-    title: SITE_NAME,
+    title: SITE_BRAND,
     description: DESCRIPTION,
   },
 };

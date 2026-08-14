@@ -3,6 +3,10 @@
 import { useRef } from "react";
 import { cn } from "@/lib/cn";
 import { useRevealTimeline } from "@/hooks/useRevealTimeline";
+import {
+  CONTACT_EMAIL,
+  OPERATOR_LOCATION,
+} from "@/lib/site";
 import { MonoLabel } from "./MonoLabel";
 
 /** Match real Section ids from page assembly — /# so links work off-home. */
@@ -144,17 +148,26 @@ export function Footer({ className }: FooterProps) {
         <div className="flex min-w-0 flex-col gap-space-4 max-md:gap-space-1">
           <MonoLabel className="max-md:pb-space-2">Contact</MonoLabel>
           <a
-            href="mailto:hey@trymurmur.studio"
+            href={`mailto:${CONTACT_EMAIL}`}
             className={cn(
               linkClass,
               "font-mono text-mono-label normal-case max-md:break-all max-md:py-space-3 max-md:text-small md:whitespace-nowrap",
             )}
           >
-            hey@trymurmur.studio
+            {CONTACT_EMAIL}
           </a>
           <p className="font-mono text-mono-label normal-case text-faint whitespace-nowrap max-md:border-t max-md:border-divider max-md:pt-space-3 max-md:text-small">
-            Chandigarh, IN
+            {OPERATOR_LOCATION}
           </p>
+          <a
+            href="/contact"
+            className={cn(
+              linkClass,
+              "font-mono text-mono-label normal-case max-md:border-t max-md:border-divider max-md:py-space-3 max-md:text-small",
+            )}
+          >
+            Contact &amp; support
+          </a>
           <a
             href="/privacy"
             className={cn(
