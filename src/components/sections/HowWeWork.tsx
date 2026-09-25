@@ -12,7 +12,7 @@ export const SPRINT_STEPS: readonly SprintStep[] = [
     range: "0–24h",
     title: "Capture.",
     bullets: [
-      "60-min discovery call — recorded",
+      "30-min discovery call — recorded",
       "Idea → foundation via the pipeline",
       "AI-drafted PRD in your inbox",
       "Scope locked, clock starts",
