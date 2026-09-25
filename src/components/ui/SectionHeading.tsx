@@ -1,4 +1,4 @@
-import type { ReactNode, Ref } from "react";
+import { Fragment, type ReactNode, type Ref } from "react";
 import { cn } from "@/lib/cn";
 import { SectionLabel } from "./SectionLabel";
 
@@ -57,13 +57,15 @@ export function SectionHeading({
           headlineClassName,
         )}
       >
-        {lines.map((line) => (
-          <span
-            key={line.text}
-            className={cn("block", line.accent && "italic text-accent")}
-          >
-            {line.text}
-          </span>
+        {lines.map((line, index) => (
+          <Fragment key={line.text}>
+            {index > 0 ? " " : null}
+            <span
+              className={cn("block", line.accent && "italic text-accent")}
+            >
+              {line.text}
+            </span>
+          </Fragment>
         ))}
       </Tag>
 

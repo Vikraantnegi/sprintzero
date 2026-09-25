@@ -38,14 +38,12 @@ type RecentBuildProps = {
 /**
  * Stage 4 · Recent builds — two real receipts (Propel + Murmur).
  * Accent budget: italic Real receipts. (1) + two amber live links (2–3).
- * Reserved quote slot: 0 amber.
  */
 export function RecentBuild({ className }: RecentBuildProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const labelRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
-  const reservedRef = useRef<HTMLDivElement>(null);
 
   useRevealTimeline({
     scope: rootRef,
@@ -53,14 +51,12 @@ export function RecentBuild({ className }: RecentBuildProps) {
       const label = labelRef.current;
       const headline = headlineRef.current;
       const cards = cardsRef.current;
-      const reserved = reservedRef.current;
-      if (!label || !headline || !cards || !reserved) return null;
+      if (!label || !headline || !cards) return null;
       const cardEls = cards.querySelectorAll<HTMLElement>("[data-build-card]");
       return [
         { elements: [label] },
         { elements: [headline] },
         { elements: [...cardEls], stagger: 0.08 },
-        { elements: [reserved] },
       ];
     },
   });
@@ -130,19 +126,6 @@ export function RecentBuild({ className }: RecentBuildProps) {
             </Card>
           </div>
         ))}
-      </div>
-
-      <div
-        ref={reservedRef}
-        className="flex flex-col gap-space-4 rounded-lg border border-dashed border-hairline p-space-6 max-md:p-space-5"
-      >
-        <MonoLabel>Client quote — reserved</MonoLabel>
-        <p className="font-display text-h3 font-normal italic text-faint">
-          Quote goes here once approved.
-        </p>
-        <span className="font-mono text-meta text-faint">
-          Name · Role, Company
-        </span>
       </div>
     </div>
   );

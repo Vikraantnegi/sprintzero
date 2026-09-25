@@ -1,0 +1,20 @@
+SprintZero Studio
+A one-operator software studio that ships deployed MVPs in 72-hour sprints. Fixed scope, fixed price from $1,500, and the client owns the repo, keys, and brand kit.
+SprintZero Studio is run by a single operator. Every sprint starts with the studio's own pipeline (Murmur), which turns an idea into a product foundation (PRD, architecture, brand, task board) in under ten minutes. The rest of the 72 hours is human-led build work.
+How a sprint works
+
+* Day 0 (0–24h): discovery call, idea to foundation via the pipeline, scope locked, clock starts.
+* Day 1–2 (24–72h): architecture, brand, UI, and a real build with a daily build link.
+* Day 3 (72h): deployed to production, repo and keys transferred, walkthrough recording.
+* 30 days of post-launch support (bug fixes and questions on what shipped) is included.
+
+Key pages
+
+* [Home](https://sprint0.trymurmur.studio/): what the studio builds, how a sprint works, pricing, FAQ
+* [Book a discovery call](https://sprint0.trymurmur.studio/book)
+* [About](https://sprint0.trymurmur.studio/about)
+* [Contact](https://sprint0.trymurmur.studio/contact)
+
+Related
+
+* [Murmur](https://www.trymurmur.studio/): the voice-to-project-foundation product that runs the first step of every sprint

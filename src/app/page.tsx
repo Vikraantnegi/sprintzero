@@ -15,26 +15,42 @@ import {
   TheStack,
   WhatWeBuild,
 } from "@/components/sections";
+import { FaqJsonLd } from "@/components/seo/FaqJsonLd";
 import { BrandStrip, Footer } from "@/components/ui";
 import { SITE_BRAND } from "@/lib/site";
 
+const TITLE = `${SITE_BRAND} · MVP development in 72 hours`;
+const DESCRIPTION =
+  "MVP development in 72 hours from a one-operator software studio in India. You bring the idea; you get a deployed, working MVP. Fixed scope, from $1,500, and you own the code.";
+
+// Nested openGraph/twitter objects replace (not merge with) the layout's,
+// so type/siteName/card must be restated here.
 export const metadata: Metadata = {
   title: {
-    absolute: `${SITE_BRAND} · The 72-hour software studio`,
+    absolute: TITLE,
   },
-  description:
-    "A 72-hour software studio. You bring the idea; one operator hands back a deployed, working MVP. Fixed scope, transparent pricing, you own everything.",
-  alternates: { canonical: "/" },
+  description: DESCRIPTION,
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: `${SITE_BRAND} · The 72-hour software studio`,
-    description:
-      "A 72-hour software studio. You bring the idea; one operator hands back a deployed, working MVP. Fixed scope, transparent pricing, you own everything.",
+    type: "website",
+    siteName: SITE_BRAND,
+    url: "/",
+    title: TITLE,
+    description: DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
   },
 };
 
 export default function Home() {
   return (
     <>
+      <FaqJsonLd />
       {/* ONE global grain — shell level only */}
       <Grain />
       <LenisProvider>

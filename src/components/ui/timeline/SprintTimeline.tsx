@@ -231,7 +231,7 @@ export function SprintTimeline({
               <div className="flex items-baseline justify-between gap-space-3 border-b border-hairline pb-space-4">
                 <span className="whitespace-nowrap font-mono text-mono-label uppercase tracking-[0.1em] text-text">
                   {step.day}
-                </span>
+                </span>{" "}
                 <span className="whitespace-nowrap font-mono text-mono-label tracking-[0.06em] text-faint">
                   {step.range}
                 </span>
@@ -277,7 +277,7 @@ export function SprintTimeline({
               <div className="flex flex-col gap-0.5">
                 <span className="font-mono text-meta uppercase tracking-[0.1em] text-text">
                   {step.day}
-                </span>
+                </span>{" "}
                 <span className="font-mono text-meta tracking-[0.06em] text-faint">
                   {step.range}
                 </span>
