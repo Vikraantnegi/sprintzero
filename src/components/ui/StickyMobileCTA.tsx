@@ -20,7 +20,13 @@ export function StickyMobileCTA({ className }: { className?: string }) {
   const pathname = usePathname();
   const reduced = useReducedMotion();
   const [pastHero, setPastHero] = useState(false);
-  const [footerInView, setFooterInView] = useState(false);
+  // Keyed by pathname so a stale reading from the previous route reads as false.
+  const [footerObserved, setFooterObserved] = useState<{
+    pathname: string | null;
+    inView: boolean;
+  }>({ pathname: null, inView: false });
+  const footerInView =
+    footerObserved.pathname === pathname && footerObserved.inView;
 
   useEffect(() => {
     const onScroll = () => {
@@ -33,13 +39,11 @@ export function StickyMobileCTA({ className }: { className?: string }) {
 
   useEffect(() => {
     const footer = document.querySelector("footer");
-    if (!footer) {
-      setFooterInView(false);
-      return;
-    }
+    if (!footer) return;
 
     const observer = new IntersectionObserver(
-      ([entry]) => setFooterInView(entry.isIntersecting),
+      ([entry]) =>
+        setFooterObserved({ pathname, inView: entry.isIntersecting }),
       { root: null, threshold: 0 },
     );
     observer.observe(footer);

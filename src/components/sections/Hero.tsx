@@ -119,10 +119,10 @@ export function Hero({ className }: HeroProps) {
         <h1 className="relative z-[1] font-display text-display-xl font-normal text-text">
           <span ref={line1Ref} className="block">
             The
-          </span>
+          </span>{" "}
           <span ref={line2Ref} className="block italic text-accent">
             72-hour
-          </span>
+          </span>{" "}
           <span ref={line3Ref} className="block">
             software studio.
           </span>

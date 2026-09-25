@@ -24,29 +24,6 @@ export function useMagnetic(enabled: boolean) {
     }
   }, []);
 
-  const tick = useCallback(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    current.current.x += (target.current.x - current.current.x) * lerp;
-    current.current.y += (target.current.y - current.current.y) * lerp;
-
-    el.style.setProperty("--mx", `${current.current.x}px`);
-    el.style.setProperty("--my", `${current.current.y}px`);
-
-    if (
-      hovering.current ||
-      Math.abs(current.current.x) > 0.1 ||
-      Math.abs(current.current.y) > 0.1
-    ) {
-      raf.current = requestAnimationFrame(tick);
-    } else {
-      el.style.setProperty("--mx", "0px");
-      el.style.setProperty("--my", "0px");
-      raf.current = null;
-    }
-  }, [lerp]);
-
   useEffect(() => {
     if (!enabled) return;
 
@@ -56,6 +33,29 @@ export function useMagnetic(enabled: boolean) {
     const coarse = window.matchMedia("(pointer: coarse)").matches;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (coarse || reduced) return;
+
+    const tick = () => {
+      const el = ref.current;
+      if (!el) return;
+
+      current.current.x += (target.current.x - current.current.x) * lerp;
+      current.current.y += (target.current.y - current.current.y) * lerp;
+
+      el.style.setProperty("--mx", `${current.current.x}px`);
+      el.style.setProperty("--my", `${current.current.y}px`);
+
+      if (
+        hovering.current ||
+        Math.abs(current.current.x) > 0.1 ||
+        Math.abs(current.current.y) > 0.1
+      ) {
+        raf.current = requestAnimationFrame(tick);
+      } else {
+        el.style.setProperty("--mx", "0px");
+        el.style.setProperty("--my", "0px");
+        raf.current = null;
+      }
+    };
 
     const onMove = (e: MouseEvent) => {
       const rect = el.getBoundingClientRect();
@@ -81,7 +81,7 @@ export function useMagnetic(enabled: boolean) {
       el.removeEventListener("mouseleave", onLeave);
       stop();
     };
-  }, [enabled, clamp, stop, tick]);
+  }, [enabled, clamp, lerp, stop]);
 
   return ref;
 }

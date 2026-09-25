@@ -32,10 +32,8 @@ export function SchedulerPanel({ className }: SchedulerPanelProps) {
     const el = gateRef.current;
     if (!el) return;
 
-    if (typeof IntersectionObserver === "undefined") {
-      setShouldLoad(true);
-      return;
-    }
+    // No IntersectionObserver → focus/pointer requestLoad is the fallback.
+    if (typeof IntersectionObserver === "undefined") return;
 
     const io = new IntersectionObserver(
       (entries) => {

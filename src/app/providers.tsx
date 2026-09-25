@@ -53,8 +53,8 @@ export function PostHogProvider({ children }: PostHogProviderProps) {
       person_profiles: "identified_only",
       capture_pageview: false, // App Router: manual
       // consent banner pending KAN-78 — DNT is the interim gate
+      loaded: () => setReady(true),
     });
-    setReady(true);
   }, []);
 
   return (
