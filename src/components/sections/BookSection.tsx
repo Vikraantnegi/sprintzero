@@ -19,34 +19,38 @@ type BookSectionProps = {
  */
 export function BookSection({ className }: BookSectionProps) {
   const reduced = useReducedMotion();
+  // null on the first frame means "unknown". Treating that as motion
+  // applies y:12, then drops the animation when reduced motion resolves
+  // and leaves the paragraph shifted.
+  const motionOk = reduced === false;
 
   /** Secondary chrome may fade; LCP framing (headline + body) stays visible. */
   const up = (delay: number) =>
-    reduced
-      ? {}
-      : {
+    motionOk
+      ? {
           initial: { opacity: 0, y: 12 },
           animate: { opacity: 1, y: 0 },
           transition: { duration: SZ_DUR, ease: SZ_EASE_FRAMER, delay },
-        };
+        }
+      : {};
 
   const upLcp = (delay: number) =>
-    reduced
-      ? {}
-      : {
+    motionOk
+      ? {
           initial: { y: 12 },
           animate: { y: 0 },
           transition: { duration: SZ_DUR, ease: SZ_EASE_FRAMER, delay },
-        };
+        }
+      : {};
 
   const fadeIn = (delay: number) =>
-    reduced
-      ? {}
-      : {
+    motionOk
+      ? {
           initial: { opacity: 0 },
           animate: { opacity: 1 },
           transition: { duration: SZ_DUR, ease: SZ_EASE_FRAMER, delay },
-        };
+        }
+      : {};
 
   return (
     <div
@@ -57,6 +61,7 @@ export function BookSection({ className }: BookSectionProps) {
           <SectionLabel
             number={bookingCopy.sectionNumber}
             name={bookingCopy.sectionName}
+            muted="muted"
           />
         </motion.div>
 
@@ -80,7 +85,7 @@ export function BookSection({ className }: BookSectionProps) {
           {...up(0.38)}
         >
           {bookingCopy.metaLines.map((line) => (
-            <p key={line} className="font-mono text-meta text-faint">
+            <p key={line} className="font-mono text-meta text-muted">
               {line}
             </p>
           ))}

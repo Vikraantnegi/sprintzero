@@ -6,6 +6,7 @@ type SectionLabelProps = {
   name: string;
   trailingRule?: boolean;
   className?: string;
+  muted?: "faint" | "muted" | "accent" | "text";
 };
 
 export function SectionLabel({
@@ -13,9 +14,10 @@ export function SectionLabel({
   name,
   trailingRule = false,
   className,
+  muted = "faint",
 }: SectionLabelProps) {
   const label = (
-    <MonoLabel className={cn("block", className)}>
+    <MonoLabel muted={muted} className={cn("block", className)}>
       {number} — {name}
     </MonoLabel>
   );

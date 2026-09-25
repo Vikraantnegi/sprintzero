@@ -113,6 +113,7 @@ export function Hero({ className }: HeroProps) {
           <SectionLabel
             number="00"
             name="MANIFESTO · a one-person software studio"
+            muted="muted"
           />
         </div>
 
@@ -179,7 +180,7 @@ export function Hero({ className }: HeroProps) {
           />
         </div>
 
-        <p className="font-mono text-caption text-faint">
+        <p className="font-mono text-caption text-muted">
           72:00:00 is a static ceiling mark, not a running timer — nothing counts
           down, nothing is fabricated.
         </p>
