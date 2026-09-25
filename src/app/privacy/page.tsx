@@ -17,6 +17,7 @@ import {
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description: `How ${SITE_NAME} handles your data.`,
+  alternates: { canonical: "/privacy" },
 };
 
 /** Draft date — bump when counsel finalizes (KAN-78). */

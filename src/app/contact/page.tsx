@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   title: "Contact",
   description:
     "How to reach SprintZero: email the operator, what 30-day post-launch support covers, and how to book a discovery call.",
+  alternates: { canonical: "/contact" },
 };
 
 export default function ContactPage() {

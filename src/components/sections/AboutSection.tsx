@@ -13,7 +13,7 @@ type AboutSectionProps = {
 };
 
 /**
- * 09 — About. Mount stagger. Honest one-operator story — no name, no face.
+ * 09 — About. Mount stagger. Honest one-operator story — Asuma / @AsumaCodes, no face.
  * Accent budget (2): italic headline line 2 + primary CTA fill.
  */
 export function AboutSection({ className }: AboutSectionProps) {

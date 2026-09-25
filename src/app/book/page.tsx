@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   title: "Book a discovery call",
   description:
     "Book a 30-minute discovery call. Scope your sprint, confirm the 72-hour window, and lock a fixed-price floor from $1,500.",
+  alternates: { canonical: "/book" },
 };
 
 export default function BookPage() {

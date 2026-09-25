@@ -11,7 +11,8 @@ import { Footer } from "@/components/ui";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "One-operator software studio: real builds, a fixed-scope 72-hour model, reachable and accountable — no agency theater.",
+    "SprintZero is run by Asuma (@AsumaCodes) — a solo operator: real builds, a fixed-scope 72-hour model, reachable and accountable.",
+  alternates: { canonical: "/about" },
 };
 
 export default function AboutPage() {
